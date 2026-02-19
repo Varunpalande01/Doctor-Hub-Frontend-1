@@ -1,77 +1,36 @@
-/* src/layouts/DoctorLayout.css */
-
 .doctor-layout {
   display: flex;
   min-height: 100vh;
-  /* Soft mint background for a medical clinical feel */
-  background-color: var(--bg-light, #f0fdf4);
-  font-family: 'Inter', sans-serif;
+  background-color: #f0fdf4;
+  width: 100%;
+  overflow-x: hidden;
 }
 
-/* --- MAIN WRAPPER --- */
 .doctor-main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-width: 0; /* Prevents layout break on table overflow */
+  min-width: 0;
+  transition: all 0.3s ease;
+  height: 100vh;
 }
 
-/* --- CONTENT AREA --- */
+@media (min-width: 1025px) {
+  .sidebar-expanded .doctor-main { margin-left: 280px; width: calc(100% - 280px); }
+  .sidebar-collapsed .doctor-main { margin-left: 85px; width: calc(100% - 85px); }
+}
+
 .doctor-content {
   flex: 1;
   padding: 24px;
   overflow-y: auto;
-  background-color: var(--bg-light, #f0fdf4);
-  display: flex;
-  flex-direction: column;
-  scroll-behavior: smooth;
+  background-color: #f0fdf4;
 }
 
-/* Ensure the inner content doesn't hug the edges on wider doctor monitors */
-.doctor-content-inner {
-  max-width: 1400px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* --- DOCTOR FOOTER (Optional) --- */
-.doctor-footer {
-  padding: 15px 24px;
-  text-align: center;
-  font-size: 13px;
-  color: #64748b;
-  background: #ffffff;
-  border-top: 1px solid #dcfce7;
-}
-
-/* ================================================================
-   ALL-SCREEN RESPONSIVE MEDIA QUERIES
-================================================================ */
-
+/* --- MOBILE: REMOVE ALL PADDING --- */
 @media (max-width: 1024px) {
-  .doctor-content {
-    padding: 20px;
-  }
-}
-
-@media (max-width: 768px) {
-  .doctor-content {
-    padding: 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  /* Prevent the content from being hidden behind the fixed bottom nav */
-  .doctor-layout {
-    flex-direction: column;
-  }
-
-  .doctor-content {
-    padding: 15px 12px 80px 12px; /* Extra bottom padding for mobile nav */
-    background-color: #ffffff; /* Brighter look for small screens */
-  }
-
-  .doctor-footer {
-    padding-bottom: 90px; /* Ensure footer text is above bottom bar */
+  .doctor-main { margin-left: 0 !important; width: 100% !important; }
+  .doctor-content { 
+    padding: 10px 0px !important; /* Side padding zero kar di hai */
   }
 }

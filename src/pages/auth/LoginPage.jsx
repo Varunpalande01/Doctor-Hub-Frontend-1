@@ -227,6 +227,8 @@
 
 
 
+
+// ye wala login without authentication ka h 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css"; // Combined CSS for both login and signup
@@ -275,7 +277,7 @@ const LoginPage = () => {
       setLoading(false);
       if (validUser.role === "ADMIN") navigate("/admin/dashboard");
       else if (validUser.role === "DOCTOR") navigate("/doctor/dashboard");
-      else navigate("/patient/dashboard");
+      else navigate("/");
     }, 800);
   };
 

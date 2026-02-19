@@ -53,70 +53,87 @@
 // export default DoctorNotifications;
 // src/pages/doctor/Notifications.jsx
 
+
+
+
+
+
 import React from "react";
 import { useNotifications } from "../../context/NotificationContext";
 import { useNavigate } from "react-router-dom";
+import { FiCalendar, FiUser, FiInfo, FiChevronRight, FiClock } from "react-icons/fi"; 
 import "./Notifications.css";
 
 const DoctorNotifications = () => {
   const { notifications, markAsRead, removeNotification } = useNotifications();
   const navigate = useNavigate();
 
-  // Group notifications by type
   const grouped = notifications.reduce((acc, n) => {
     if (!acc[n.type]) acc[n.type] = [];
     acc[n.type].push(n);
     return acc;
   }, {});
 
-  // Handle click
   const handleClick = (notification) => {
     markAsRead(notification.id);
-
-    // Navigate depending on type
     switch (notification.type) {
-      case "APPOINTMENT":
-        navigate("/doctor/appointments");
-        break;
-      case "PATIENT":
-        navigate("/doctor/patients");
-        break;
-      case "PROFILE":
-        navigate("/doctor/profile");
-        break;
-      default:
-        navigate("/doctor/dashboard");
+      case "APPOINTMENT": navigate("/doctor/appointments"); break;
+      case "PATIENT": navigate("/doctor/patients"); break;
+      case "PROFILE": navigate("/doctor/profile"); break;
+      default: navigate("/doctor/dashboard");
     }
-
-    // Remove after click
     removeNotification(notification.id);
   };
 
   return (
     <div className="doctor-notifications-page">
+      <div className="notif-page-header">
+        <div className="header-left">
+          <h3>Notifications</h3>
+          <p>You have {notifications.length} unread updates</p>
+        </div>
+      </div>
+
       {Object.keys(grouped).length === 0 && (
-        <p className="empty-text">No notifications</p>
+        <div className="no-notif-box">
+          <FiBellOff className="empty-icon" />
+          <p>No new notifications</p>
+        </div>
       )}
 
       {Object.entries(grouped).map(([type, items]) => (
-        <div key={type} className="notification-group">
-          <h4 className="notification-group-heading">
-            {type.charAt(0).toUpperCase() + type.slice(1)}
-          </h4>
+        <div key={type} className="notif-group-container">
+          <h4 className="notif-category-title">{type}</h4>
+          
+          <div className="notif-grid">
+            {items.map((n) => (
+              <div
+                key={n.id}
+                className={`notif-card-item ${n.isRead ? "is-read" : "is-unread"}`}
+                onClick={() => handleClick(n)}
+              >
+                <div className="notif-icon-box">
+                  {type === "APPOINTMENT" && <FiCalendar />}
+                  {type === "PATIENT" && <FiUser />}
+                  {type === "PROFILE" && <FiInfo />}
+                </div>
+                
+                <div className="notif-content-wrapper">
+                  <div className="notif-main-row">
+                    <p className="notif-msg">{n.message}</p>
+                    {/* ✅ YAHAN TIME DIKHEGA */}
+                    <span className="notif-timestamp">
+                      <FiClock className="time-icon" />
+                      {n.time || "10:30 AM"} 
+                    </span>
+                  </div>
+                  <span className="notif-date-tag">Today</span>
+                </div>
 
-          {items.map((n) => (
-            <div
-              key={n.id}
-              className={`notification-card ${n.isRead ? "read" : "unread"}`}
-              onClick={() => handleClick(n)}
-            >
-              <span
-                className="notification-dot"
-                style={{ backgroundColor: n.isRead ? "#aaa" : "#10b981" }}
-              />
-              <p>{n.message}</p>
-            </div>
-          ))}
+                <FiChevronRight className="notif-arrow" />
+              </div>
+            ))}
+          </div>
         </div>
       ))}
     </div>
@@ -124,4 +141,3 @@ const DoctorNotifications = () => {
 };
 
 export default DoctorNotifications;
-

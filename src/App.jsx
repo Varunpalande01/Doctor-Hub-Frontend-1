@@ -153,6 +153,7 @@ import Appointments from "./pages/doctor/Appointments";
 import DoctorAppointmentView from "./pages/doctor/DoctorAppointmentView";
 import Patients from "./pages/doctor/Patients";
 import PatientDetails from "./pages/doctor/PatientDetails";
+import AddPatient from "./pages/doctor/AddPatient"; // ✅ New Import Added
 import DoctorNotifications from "./pages/doctor/Notifications";
 import Availability from "./pages/doctor/Availability";
 import Profile from "./pages/doctor/Profile";
@@ -199,6 +200,7 @@ function App() {
         <Route path="appointments/:id" element={<DoctorAppointmentView />} />
         <Route path="patients" element={<Patients />} />
         <Route path="patients/:patientId" element={<PatientDetails />} />
+        <Route path="add-patient" element={<AddPatient />} /> {/* ✅ New Route Added */}
         <Route path="notifications" element={<DoctorNotifications />} />
         <Route path="availability" element={<Availability />} />
         <Route path="profile" element={<Profile />} />

@@ -1,90 +1,307 @@
+// import React, { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import "./Appointments.css";
+
+// const Appointments = () => {
+//   const navigate = useNavigate();
+
+//   // TEMP – later from backend
+//   const profileCompleted = true; // change to false to test lock
+
+//   const [appointments, setAppointments] = useState([
+//     {
+//       id: 1,
+//       patient: "Rahul Sharma",
+//       time: "10:00 AM",
+//       status: "PENDING",
+//     },
+//     {
+//       id: 2,
+//       patient: "Anita Verma",
+//       time: "11:30 AM",
+//       status: "APPROVED",
+//     },
+//   ]);
+
+//   const updateStatus = (id, newStatus) => {
+//     setAppointments((prev) =>
+//       prev.map((a) =>
+//         a.id === id ? { ...a, status: newStatus } : a
+//       )
+//     );
+//   };
+
+//   return (
+//     <div className="doctor-page">
+//       <h3>Appointments</h3>
+
+//       <table className="doctor-table">
+//         <thead>
+//           <tr>
+//             <th>Patient</th>
+//             <th>Time</th>
+//             <th>Status</th>
+//             <th>Actions</th>
+//           </tr>
+//         </thead>
+
+//         <tbody>
+//           {appointments.map((a) => (
+//             <tr key={a.id}>
+//               <td>{a.patient}</td>
+//               <td>{a.time}</td>
+//               <td>{a.status}</td>
+//               <td className="actions">
+//                 {/* VIEW – ALWAYS ENABLED */}
+//                 <button
+//                   className="view-btn"
+//                   onClick={() => navigate(`/doctor/appointments/${a.id}`)}
+//                 >
+//                   View
+//                 </button>
+
+//                 {/* APPROVE */}
+//                 <button
+//                   disabled={!profileCompleted || a.status !== "PENDING"}
+//                   onClick={() => updateStatus(a.id, "APPROVED")}
+//                 >
+//                   Approve
+//                 </button>
+
+//                 {/* REJECT */}
+//                 <button
+//                   disabled={!profileCompleted || a.status !== "PENDING"}
+//                   onClick={() => updateStatus(a.id, "REJECTED")}
+//                 >
+//                   Reject
+//                 </button>
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+
+//       {!profileCompleted && (
+//         <p className="warning-text">
+//           Complete your profile to approve or reject appointments.
+//         </p>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Appointments;
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./Appointments.css";
+import AddAppointmentModal from "./AddAppointmentModal";
 
 const Appointments = () => {
-  const navigate = useNavigate();
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [filterStatus, setFilterStatus] = useState("ALL");
 
-  // TEMP – later from backend
-  const profileCompleted = true; // change to false to test lock
-
-  const [appointments, setAppointments] = useState([
+  const [appointmentsData, setAppointmentsData] = useState([
     {
       id: 1,
-      patient: "Rahul Sharma",
-      time: "10:00 AM",
+      patient_name: "Rahul Sharma",
+      hospital: "City Care Clinic",
+      city: "Pune",
+      date: "2026-03-20",
+      slot: "10:00 AM",
+      complaint: "Fever & Cold",
+      is_critical: false,
       status: "PENDING",
     },
     {
       id: 2,
-      patient: "Anita Verma",
-      time: "11:30 AM",
+      patient_name: "Anita Verma",
+      hospital: "Ortho Plus Hospital",
+      city: "Mumbai",
+      date: "2026-03-21",
+      slot: "11:30 AM",
+      complaint: "Back Pain",
+      is_critical: true,
       status: "APPROVED",
+    },
+    {
+      id: 3,
+      patient_name: "Sunil Gupta",
+      hospital: "Heart Care Center",
+      city: "Delhi",
+      date: "2026-03-18",
+      slot: "01:00 PM",
+      complaint: "Chest Pain",
+      is_critical: false,
+      status: "REJECTED",
     },
   ]);
 
-  const updateStatus = (id, newStatus) => {
-    setAppointments((prev) =>
-      prev.map((a) =>
-        a.id === id ? { ...a, status: newStatus } : a
-      )
+  const handleStatusChange = (id, newStatus) => {
+    const updated = appointmentsData.map((app) =>
+      app.id === id ? { ...app, status: newStatus } : app
     );
+    setAppointmentsData(updated);
   };
 
+  const handleView = (appointment) => {
+    setSelectedAppointment(appointment);
+  };
+
+  const closeViewModal = () => {
+    setSelectedAppointment(null);
+  };
+
+  const filteredAppointments =
+    filterStatus === "ALL"
+      ? appointmentsData
+      : appointmentsData.filter((app) => app.status === filterStatus);
+
   return (
-    <div className="doctor-page">
-      <h3>Appointments</h3>
+    <div className="appointments-page-wrapper">
+      <div className="page-header-flex">
+        <h2 className="appointments-title">My Appointments</h2>
+        {/* New Appointment button removed */}
+      </div>
 
-      <table className="doctor-table">
-        <thead>
-          <tr>
-            <th>Patient</th>
-            <th>Time</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+      {/* FILTER BUTTONS WITH COUNT */}
+      <div className="filter-container">
+        {["ALL", "PENDING", "APPROVED", "REJECTED"].map((status) => {
+          const count =
+            status === "ALL"
+              ? appointmentsData.length
+              : appointmentsData.filter((app) => app.status === status).length;
+          return (
+            <button
+              key={status}
+              className={`filter-btn ${filterStatus === status ? "active-filter" : ""}`}
+              onClick={() => setFilterStatus(status)}
+            >
+              {status} ({count})
+            </button>
+          );
+        })}
+      </div>
 
-        <tbody>
-          {appointments.map((a) => (
-            <tr key={a.id}>
-              <td>{a.patient}</td>
-              <td>{a.time}</td>
-              <td>{a.status}</td>
-              <td className="actions">
-                {/* VIEW – ALWAYS ENABLED */}
+      {/* DESKTOP TABLE */}
+      <div className="desktop-view-container">
+        <table className="modern-doctor-table">
+          <thead>
+            <tr>
+              <th>PATIENT NAME</th>
+              <th>HOSPITAL</th>
+              <th>CITY</th>
+              <th>DATE</th>
+              <th>SLOT</th>
+              <th>CURRENT STATUS</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredAppointments.map((app) => (
+              <tr key={app.id}>
+                <td className="patient-cell">{app.patient_name}</td>
+                <td>{app.hospital}</td>
+                <td>{app.city}</td>
+                <td>{app.date}</td>
+                <td>
+                  <span className="time-tag">{app.slot}</span>
+                </td>
+                <td>
+                  <span className={`status-pill ${app.status.toLowerCase()}`}>
+                    {app.status}
+                  </span>
+                </td>
+                <td className="actions-cell">
+                  <button className="btn-view" onClick={() => handleView(app)}>
+                    View
+                  </button>
+                  <button
+                    className="btn-approve"
+                    disabled={app.status === "APPROVED"}
+                    onClick={() => handleStatusChange(app.id, "APPROVED")}
+                  >
+                    Approve
+                  </button>
+                  <button
+                    className="btn-reject"
+                    disabled={app.status === "REJECTED"}
+                    onClick={() => handleStatusChange(app.id, "REJECTED")}
+                  >
+                    Reject
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* MOBILE VIEW */}
+      <div className="mobile-view-container">
+        {filteredAppointments.map((app) => (
+          <div key={app.id} className="appointment-card-mobile">
+            <div className="card-top">
+              <div className="card-user-info">
+                <h4>{app.patient_name}</h4>
+                <p>{app.hospital}, {app.city}</p>
+                <p>
+                  {app.date} | <span className="time-tag">{app.slot}</span>
+                </p>
+              </div>
+              <span className={`status-pill ${app.status.toLowerCase()}`}>
+                {app.status}
+              </span>
+            </div>
+
+            <div className="card-footer-btns">
+              <button className="m-btn view" onClick={() => handleView(app)}>
+                View Details
+              </button>
+
+              <div className="m-action-row">
                 <button
-                  className="view-btn"
-                  onClick={() => navigate(`/doctor/appointments/${a.id}`)}
-                >
-                  View
-                </button>
-
-                {/* APPROVE */}
-                <button
-                  disabled={!profileCompleted || a.status !== "PENDING"}
-                  onClick={() => updateStatus(a.id, "APPROVED")}
+                  className="m-btn approve"
+                  disabled={app.status === "APPROVED"}
+                  onClick={() => handleStatusChange(app.id, "APPROVED")}
                 >
                   Approve
                 </button>
 
-                {/* REJECT */}
                 <button
-                  disabled={!profileCompleted || a.status !== "PENDING"}
-                  onClick={() => updateStatus(a.id, "REJECTED")}
+                  className="m-btn reject"
+                  disabled={app.status === "REJECTED"}
+                  onClick={() => handleStatusChange(app.id, "REJECTED")}
                 >
                   Reject
                 </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
 
-      {!profileCompleted && (
-        <p className="warning-text">
-          Complete your profile to approve or reject appointments.
-        </p>
+      {/* VIEW MODAL */}
+      {selectedAppointment && (
+        <div className="view-modal-overlay" onClick={closeViewModal}>
+          <div className="view-modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Appointment Details</h3>
+            <p><strong>Patient:</strong> {selectedAppointment.patient_name}</p>
+            <p><strong>Hospital:</strong> {selectedAppointment.hospital}</p>
+            <p><strong>City:</strong> {selectedAppointment.city}</p>
+            <p><strong>Date:</strong> {selectedAppointment.date}</p>
+            <p><strong>Slot:</strong> {selectedAppointment.slot}</p>
+            <p><strong>Complaint:</strong></p>
+            <div className="complaint-box">{selectedAppointment.complaint}</div>
+            <p>
+              <strong>Critical:</strong>{" "}
+              <span style={{ color: selectedAppointment.is_critical ? "red" : "green" }}>
+                {selectedAppointment.is_critical ? "Yes" : "No"}
+              </span>
+            </p>
+            <button className="btn-reject" onClick={closeViewModal}>
+              Close
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

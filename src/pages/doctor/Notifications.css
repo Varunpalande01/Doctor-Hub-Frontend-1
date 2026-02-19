@@ -1,242 +1,114 @@
-/* --- SIDEBAR BASE --- */
-.doctor-sidebar {
-  width: 300px;
-  min-width: 300px;
-  background: #ffffff;
-  border-right: 1px solid #edf2f7;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.02);
-  overflow: hidden;
-  position: sticky;
-  top: 0;
+.doctor-notifications-page {
+  padding: 25px;
+  background-color: #f8fafc;
+  min-height: 100vh;
 }
 
-.doctor-sidebar.collapsed {
-  width: 88px;
-  min-width: 88px;
+.notif-page-header {
+  margin-bottom: 30px;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 15px;
 }
 
-/* --- HEADER & LARGE BRANDING --- */
-.sidebar-header {
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-}
-
-.doctor-logo {
-  font-size: 30px; /* MATCHES ADMIN */
+.notif-page-header h3 {
+  font-size: 26px;
+  color: #1e293b;
   font-weight: 800;
-  color: #10b981; /* Doctor Green */
-  margin: 0;
-  letter-spacing: -1.2px;
-  white-space: nowrap;
 }
 
-/* --- THE MODERN MORPHING TOGGLE --- */
-.menu-toggle-btn {
-  background: #ecfdf5;
-  border: none;
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 10px;
+.notif-group-container { margin-bottom: 35px; }
+
+.notif-category-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 700;
+  margin-bottom: 15px;
+  letter-spacing: 1.2px;
+}
+
+.notif-grid { display: flex; flex-direction: column; gap: 12px; }
+
+.notif-card-item {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 15px;
+  cursor: pointer;
+  border: 1px solid #e2e8f0;
   transition: 0.3s;
 }
 
-.menu-toggle-btn:hover {
-  background: #dcfce7;
+.notif-card-item:hover {
+  border-color: #10b981;
+  background: #f0fdf450;
+  transform: translateX(5px);
 }
 
-.hamburger .line {
-  width: 20px;
-  height: 2.5px;
-  background-color: #10b981;
-  display: block;
-  margin: 4px auto;
-  transition: all 0.3s ease-in-out;
-  border-radius: 5px;
-}
-
-/* Hamburger to Arrow animation */
-.hamburger.is-active .line:nth-child(1) {
-  transform: translateY(6.5px) rotate(45deg) scaleX(0.7);
-  transform-origin: left;
-}
-.hamburger.is-active .line:nth-child(2) {
-  opacity: 0;
-}
-.hamburger.is-active .line:nth-child(3) {
-  transform: translateY(-6.5px) rotate(-45deg) scaleX(0.7);
-  transform-origin: left;
-}
-
-/* --- NAVIGATION --- */
-.doctor-nav {
-  flex: 1;
-  padding: 20px 16px;
-  overflow-y: auto;
-}
-
-.doctor-menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.menu-item { margin-bottom: 8px; }
-
-.doctor-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 18px;
-  text-decoration: none;
-  color: #64748b;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  font-weight: 600;
-}
-
-.doctor-link:hover {
+.notif-icon-box {
+  width: 45px;
+  height: 45px;
   background: #f0fdf4;
   color: #10b981;
-}
-
-.doctor-link.active {
-  background: #10b981;
-  color: #ffffff;
-  box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.4);
-}
-
-.link-content {
+  border-radius: 12px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
 }
 
-.menu-icon { font-size: 20px; }
-.menu-text { margin-left: 14px; font-size: 15.5px; transition: opacity 0.3s; }
+.notif-content-wrapper { flex: 1; }
 
-/* --- NOTIFICATIONS --- */
-.notification-badge {
-  background: #ef4444;
-  color: white;
-  font-size: 11px;
+.notif-main-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.notif-msg {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #334155;
+}
+
+/* ✅ TIME STYLING */
+.notif-timestamp {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #10b981; /* Green color for time visibility */
   font-weight: 700;
+  white-space: nowrap;
+  background: #ecfdf5;
   padding: 2px 8px;
-  border-radius: 20px;
+  border-radius: 6px;
 }
 
-.notification-dot {
-  width: 10px;
-  height: 10px;
-  background: #ef4444;
-  border-radius: 50%;
-  border: 2px solid white;
+.time-icon { font-size: 11px; }
+
+.notif-date-tag {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 4px;
+  display: block;
 }
 
-/* --- COLLAPSED STATE LOGIC --- */
-.doctor-sidebar.collapsed .menu-text, 
-.doctor-sidebar.collapsed .doctor-logo {
-  display: none;
-}
+.notif-arrow { color: #cbd5e1; }
 
-.doctor-sidebar.collapsed .sidebar-header {
-  justify-content: center;
-}
-
-.doctor-sidebar.collapsed .doctor-link {
-  justify-content: center;
-  padding: 14px 0;
-}
-
-/* Custom Professional Scrollbar */
-.doctor-nav::-webkit-scrollbar {
-  width: 4px;
-}
-.doctor-nav::-webkit-scrollbar-thumb {
-  background: #e2e8f0;
-  border-radius: 10px;
-}
-
-/* ================================================================
-   ALL-SCREEN RESPONSIVE MEDIA QUERIES
-================================================================ */
-
-@media (max-width: 1024px) {
-  .doctor-sidebar {
-    width: 260px;
-    min-width: 260px;
-  }
-}
-
+/* RESPONSIVE */
 @media (max-width: 768px) {
-  .doctor-sidebar {
-    width: 80px; /* Force collapsed view on tablets */
-    min-width: 80px;
-  }
-  .menu-text, .doctor-logo {
-    display: none;
-  }
-  .sidebar-header {
-    padding: 0;
-    justify-content: center;
-  }
-  .menu-toggle-btn {
-    display: none; /* Auto-collapse on medium screens */
-  }
+  .notif-main-row { flex-direction: column; gap: 5px; }
+  .notif-timestamp { align-self: flex-start; }
+  .notif-card-item { padding: 15px; }
 }
 
 @media (max-width: 480px) {
-  /* On small phones, convert sidebar to a bottom navigation bar */
-  .doctor-sidebar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100vw;
-    min-width: 100vw;
-    height: 70px;
-    flex-direction: row;
-    border-right: none;
-    border-top: 1px solid #edf2f7;
-    z-index: 2000;
-    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
-  }
-
-  .sidebar-header { display: none; } /* Hide logo and toggle on mobile */
-
-  .doctor-nav {
-    padding: 0;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-  }
-
-  .doctor-menu {
-    display: flex;
-    width: 100%;
-    justify-content: space-around;
-  }
-
-  .menu-item { margin-bottom: 0; flex: 1; }
-
-  .doctor-link {
-    flex-direction: column;
-    padding: 10px 0;
-    border-radius: 0;
-    gap: 4px;
-  }
-
-  .menu-icon { font-size: 22px; }
-  .notification-badge {
-    position: absolute;
-    top: 5px;
-    right: 15px;
-  }
+  .doctor-notifications-page { padding: 15px; padding-bottom: 90px; }
+  .notif-arrow { display: none; }
 }

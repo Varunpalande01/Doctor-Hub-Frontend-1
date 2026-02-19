@@ -145,6 +145,10 @@
 // };
 
 // export default DoctorDashboard;
+
+
+
+
 import React from "react";
 import { doctorDashboardData } from "../../utils/doctorDashboardDummyData";
 import "./DoctorDashboard.css";
@@ -193,22 +197,22 @@ const DoctorDashboard = () => {
   };
 
   return (
-    <div className="doctor-dashboard">
-      {/* 1. ENHANCED PROFILE ALERT */}
+    <div className="doctor-dashboard-container">
+      {/* 1. PROFILE ALERT */}
       {profileCompletion < 100 && (
-        <div className="profile-alert-card">
-          <div className="profile-alert-left">
-            <span className="alert-icon">⚠️</span>
+        <div className="profile-alert-box">
+          <div className="alert-content-left">
+            <span className="icon-warning">⚠️</span>
             <div>
               <h4>Complete Your Profile</h4>
               <p>Your profile is {profileCompletion}% completed. Finish it to accept appointments.</p>
             </div>
           </div>
-          <div className="profile-alert-right">
-            <div className="progress-container">
-              <div className="progress-fill" style={{ width: `${profileCompletion}%` }} />
+          <div className="alert-content-right">
+            <div className="custom-progress-bar">
+              <div className="progress-active" style={{ width: `${profileCompletion}%` }} />
             </div>
-            <button className="complete-profile-btn" onClick={() => navigate("/doctor/profile")}>
+            <button className="btn-complete" onClick={() => navigate("/doctor/profile")}>
               Complete Now
             </button>
           </div>
@@ -216,41 +220,42 @@ const DoctorDashboard = () => {
       )}
 
       {/* 2. STATS GRID */}
-      <div className="doctor-stats">
-        <div className="doctor-card">
-          <span>Total Patients</span>
+      <div className="stats-grid">
+        <div className="stat-card">
+          <span className="label">Total Patients</span>
           <h3>{stats.totalPatients}</h3>
         </div>
-        <div className="doctor-card">
-          <span>Today’s Appointments</span>
+        <div className="stat-card">
+          <span className="label">Today's Appointments</span>
           <h3>{stats.todayAppointments}</h3>
         </div>
-        <div className="doctor-card">
-          <span>Pending Approvals</span>
+        <div className="stat-card">
+          <span className="label">Pending Approvals</span>
           <h3>{stats.pendingApprovals}</h3>
         </div>
       </div>
 
-      {/* 3. APPOINTMENTS TABLE */}
-      <div className="doctor-section">
-        <h4>Today’s Appointments</h4>
-        <div className="table-scroll-wrapper">
-          <table className="doctor-table">
+      {/* 3. ADAPTIVE APPOINTMENTS TABLE */}
+      <div className="appointments-section">
+        <h4 className="section-title">Today's Appointments</h4>
+        <div className="table-wrapper">
+          <table className="doctor-data-table">
             <thead>
               <tr>
-                <th>Time</th>
-                <th>Patient</th>
-                <th>Status</th>
+                <th>TIME</th>
+                <th>PATIENT NAME</th>
+                <th>STATUS</th>
               </tr>
             </thead>
             <tbody>
-              {todaysAppointments.map((a) => (
-                <tr key={a.id}>
-                  <td>{a.time}</td>
-                  <td>{a.patient}</td>
-                  <td>
-                    <span className={`doctor-status ${a.status.toLowerCase().replace(" ", "-")}`}>
-                      {a.status}
+              {todaysAppointments.map((item) => (
+                <tr key={item.id}>
+                  {/* data-label is the secret to show name on mobile */}
+                  <td data-label="TIME">{item.time}</td>
+                  <td data-label="NAME" className="name-highlight">{item.patient}</td>
+                  <td data-label="STATUS">
+                    <span className={`badge-status ${item.status.toLowerCase().replace(/\s+/g, '-')}`}>
+                      {item.status}
                     </span>
                   </td>
                 </tr>
@@ -261,16 +266,16 @@ const DoctorDashboard = () => {
       </div>
 
       {/* 4. CHARTS GRID */}
-      <div className="doctor-charts">
-        <div className="chart-card">
+      <div className="dashboard-charts">
+        <div className="chart-item">
           <h5>New Patients (Monthly)</h5>
-          <div className="canvas-wrapper">
+          <div className="canvas-container">
             <Bar data={barData} options={chartOptions} />
           </div>
         </div>
-        <div className="chart-card">
+        <div className="chart-item">
           <h5>Records Distribution</h5>
-          <div className="canvas-wrapper">
+          <div className="canvas-container">
             <Pie data={pieData} options={chartOptions} />
           </div>
         </div>

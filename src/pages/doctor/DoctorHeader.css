@@ -1,133 +1,104 @@
-/* --- DOCTOR HEADER MAIN --- */
 .doctor-header {
-  height: 60px;
-  background-color: var(--primary-accent, #10b981); /* match sidebar */
-  color: white;
+  height: 80px; /* Header ki height thodi badhayi for better fit */
+  background: #10b981;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 24px;
+  padding: 0 40px; /* Sides se padding badhayi */
+  color: white;
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.doctor-dashboard-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: #ffffff;
+.header-left { 
+  display: flex; 
+  align-items: center; 
+  gap: 40px; /* Sidebar aur text ke beech bada gap */
 }
 
-/* --- PROFILE SECTION --- */
-.doctor-profile {
+.mobile-toggle { 
+  display: none; 
+  background: rgba(255,255,255,0.2); 
+  border: none; 
+  color: white; 
+  padding: 10px 15px; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  font-size: 22px; 
+}
+
+/* Page Title - Bada aur Door */
+.page-title { 
+  font-size: 26px; /* Font size badha diya */
+  font-weight: 700; 
+  margin: 0; 
+  letter-spacing: 0.8px; /* Letters ke beech space */
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Halka depth */
+  white-space: nowrap;
+}
+
+.header-right { position: relative; }
+
+.header-profile-section {
   display: flex;
   align-items: center;
-  gap: 12px;
-  position: relative;
+  gap: 15px;
   cursor: pointer;
-}
-
-.doctor-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  object-fit: cover;
-}
-
-.doctor-name-wrapper {
-  display: flex;
-  flex-direction: column;
-}
-
-.doctor-name-text {
-  font-weight: 600;
-  font-size: 14px;
-}
-
-.doctor-role-text {
-  font-size: 12px;
-  color: #d1fae5; /* lighter green, subtle under name */
-}
-
-/* --- DROPDOWN MENU --- */
-.doctor-dropdown {
-  position: absolute;
-  right: 0;
-  top: 55px;
-  background: white;
-  width: 200px;
+  padding: 8px 15px;
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  padding: 14px;
-  z-index: 100;
-  animation: fadeDown 0.2s ease;
+  transition: 0.3s;
+  background: rgba(255,255,255,0.05);
 }
 
-.doctor-dropdown button {
-  width: 100%;
-  margin-top: 8px;
+.header-profile-section:hover { background: rgba(255,255,255,0.15); }
+
+.profile-info { text-align: right; }
+.profile-name { display: block; font-size: 15px; font-weight: 600; }
+.profile-role { display: block; font-size: 12px; opacity: 0.85; }
+.header-avatar { width: 45px; height: 45px; border-radius: 50%; border: 2px solid white; object-fit: cover; }
+
+/* Dropdown */
+.header-dropdown-menu {
+  position: absolute;
+  top: 65px;
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  width: 200px;
   padding: 10px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.2s;
+  border: 1px solid #e2e8f0;
+  animation: slideDown 0.2s ease-out;
 }
 
-.logout-btn {
-  background: #ef4444;
-  color: white;
-}
-
-.logout-btn:hover {
-  background-color: #dc2626;
-}
-
-@keyframes fadeDown {
-  from { opacity: 0; transform: translateY(-8px); }
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ================================================================
-   ALL-SCREEN RESPONSIVE MEDIA QUERIES
-================================================================ */
-
-@media (max-width: 768px) {
-  .doctor-header {
-    padding: 0 15px;
-  }
-
-  .doctor-dashboard-title {
-    font-size: 18px;
-  }
-
-  .doctor-role-text {
-    display: none; /* Hide role to save horizontal space on mobile */
-  }
+.header-dropdown-menu button {
+  width: 100%;
+  padding: 12px;
+  text-align: left;
+  border: none;
+  background: none;
+  font-size: 15px;
+  color: #334155;
+  cursor: pointer;
+  border-radius: 8px;
 }
 
-@media (max-width: 480px) {
-  .doctor-dashboard-title {
-    font-size: 16px;
-    max-width: 150px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.header-dropdown-menu button:hover { background: #f1f5f9; color: #10b981; }
+.dropdown-divider { margin: 8px 0; border-top: 1px solid #f1f5f9; }
+.logout-btn-text { color: #ef4444 !important; font-weight: 700; }
 
-  .doctor-name-text {
-    display: none; /* Only show avatar on very small screens to prevent overlap */
-  }
-
-  .doctor-dropdown {
-    width: 160px;
-    top: 50px;
-    right: -10px; /* Slight offset for better mobile alignment */
-  }
-
-  .doctor-avatar {
-    width: 35px;
-    height: 35px;
-  }
+/* Media Queries for Mobile */
+@media (max-width: 1024px) {
+  .doctor-header { height: 70px; padding: 0 20px; }
+  .mobile-toggle { display: block; }
+  .header-left { gap: 20px; }
+  .page-title { font-size: 20px; }
+  .profile-info { display: none; }
 }
