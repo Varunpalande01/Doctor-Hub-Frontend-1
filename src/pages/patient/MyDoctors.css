@@ -1,0 +1,494 @@
+:root {
+  --med-green: #10b981;
+  --med-green-light: #dcfce7;
+  --med-dark: #1e293b;
+  --med-slate: #64748b;
+  --med-bg: #f8fafc;
+  --med-white: #ffffff;
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Page Container */
+.doctors-page-wrapper {
+  padding: 24px;
+  background: var(--med-bg);
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  margin-top: 10px; /* Dashboard header se thoda gap */
+  position: relative;
+  z-index: 10; /* Main header se niche rehne ke liye */
+}
+
+/* --- HEADER & SEARCH SECTION --- */
+.docs-header-premium {
+  margin-bottom: 30px;
+  display: block; /* Safety clear */
+  z-index: 100;
+}
+
+.search-row-premium {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  align-items: center;
+  width: 100%; /* Ensure full width */
+}
+
+/* Bada Search Bar */
+.main-search-bar {
+  flex: 1;
+  height: 60px;
+  background: var(--med-white);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-radius: 18px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.main-search-bar:focus-within {
+  border-color: var(--med-green);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+  background: #fff;
+}
+
+.s-icon {
+  font-size: 20px;
+  color: var(--med-slate);
+  margin-right: 12px;
+}
+
+.main-search-bar input {
+  border: none;
+  padding: 10px 0;
+  width: 100%;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  color: var(--med-dark);
+}
+
+/* --- FILTER SYSTEM (FIXED FOR LAPTOP) --- */
+.filter-wrapper {
+  flex-shrink: 0; /* filter button width fix */
+  z-index: 1100; /* tabs ke upar rahe */
+  position: relative;
+}
+
+.filter-config-btn {
+  height: 56px;
+  padding: 0 20px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.filter-config-btn.active-btn {
+  background: var(--med-dark);
+  color: white;
+}
+
+.filter-dropdown-menu {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  width: 320px;
+  min-width: 280px;
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  z-index: 9999;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.filter-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 700; }
+.close-filter { cursor: pointer; color: var(--med-slate); }
+.filter-group { margin-bottom: 15px; }
+.filter-group label { display: block; font-size: 13px; margin-bottom: 8px; color: var(--med-slate); }
+.filter-group input { width: 100%; accent-color: var(--med-green); }
+
+.reset-filter-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: #f1f5f9;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* --- CATEGORIES --- */
+.chip-container-premium {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0; /* shrink na ho tab */
+  overflow-x: auto; /* scroll */
+  scroll-padding-left: 12px;
+  padding: 0 4px;
+}
+.chip-container-premium::-webkit-scrollbar { display: none; }
+.cat-chip {
+  padding: 10px 18px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 50px;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-block;
+  transition: 0.2s;
+  flex-shrink: 0;
+}
+
+.cat-chip:hover {
+  border-color: var(--med-green);
+  color: var(--med-green);
+  background: #f0fdf4;
+}
+
+.cat-chip.active {
+  background: var(--med-green);
+  color: white;
+  border-color: var(--med-green);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+.cat-chip:first-child {
+  margin-left: 4px;
+}
+
+/* --- SECTION TITLES --- */
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 35px 0 20px;
+}
+
+.section-head h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--med-dark);
+}
+
+.view-all-link {
+  color: var(--med-green);
+  font-weight: 700;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* --- SWIPER / HORIZONTAL CARDS --- */
+.recent-slide-item, 
+.directory-slide-item {
+  width: 320px !important; /* Fixed width for better horizontal scroll */
+  height: auto;
+}
+
+/* --- COMMON CARD STYLES & HOVERS --- */
+.premium-recent-card, 
+.directory-card-premium {
+  background: white;
+  padding: 24px;
+  border-radius: 28px;
+  border: 1px solid #f1f5f9;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: var(--shadow-sm);
+}
+
+.premium-recent-card:hover, 
+.directory-card-premium:hover {
+  transform: translateY(-12px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--med-green-light);
+}
+
+/* Card Content Details */
+.card-top-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.doc-pfp-wrapper {
+  position: relative;
+}
+
+.doc-pfp-wrapper img, 
+.dir-doc-img {
+  width: 70px;
+  height: 70px;
+  border-radius: 20px;
+  object-fit: cover;
+  background: #f1f5f9;
+}
+
+.online-indicator {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 16px;
+  height: 16px;
+  background: #22c55e;
+  border: 3px solid white;
+  border-radius: 50%;
+}
+
+.mini-action-btn {
+  background: #f0fdf4;
+  border: none;
+  color: var(--med-green);
+  padding: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.mini-action-btn:hover {
+  background: var(--med-green);
+  color: white;
+}
+
+.doc-brief h3, 
+.dir-doc-details h3 {
+  font-size: 18px;
+  margin: 0 0 6px 0;
+  color: var(--med-dark);
+}
+
+.spec-tag, 
+.dir-spec {
+  font-size: 14px;
+  color: var(--med-green);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.visit-meta {
+  font-size: 12px;
+  color: var(--med-slate);
+  line-height: 1.5;
+}
+
+/* --- BUTTONS --- */
+.follow-up-btn-primary, 
+.primary-booking-btn {
+  width: 100%;
+  margin-top: auto;
+  padding: 14px;
+  border: none;
+  background: var(--med-green);
+  color: white;
+  border-radius: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.follow-up-btn-primary:hover {
+  background: #059669;
+  box-shadow: 0 8px 15px rgba(16, 185, 129, 0.3);
+}
+
+.primary-booking-btn {
+  background: var(--med-dark);
+}
+
+.primary-booking-btn:hover {
+  background: #000;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Directory Specific */
+.directory-main-content {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.dir-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--med-slate);
+}
+
+.rating {
+  color: #f59e0b;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.status-badge-premium {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: var(--med-green-light);
+  color: #166534;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dir-card-footer {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.secondary-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.sec-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--med-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.sec-btn:hover {
+  background: #f8fafc;
+  border-color: var(--med-slate);
+}
+
+/* --- MOBILE RESPONSIVENESS (Refined & Professional) --- */
+@media (max-width: 768px) {
+  .doctors-page-wrapper {
+    padding: 16px;
+    margin-top: 5px; /* PROFESSIONAL FIX: Dashboard header overlap se bachne ke liye */
+  }
+
+  .search-row-premium {
+    flex-direction: column; 
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 20px; /* Row ke niche gap */
+    display: flex !important; /* Force visibility */
+  }
+.docs-header-premium {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    height: auto; /* Allow content to push down */
+  }
+  .main-search-bar {
+    order: 1; 
+    width: 100% !important;
+    height: 54px;
+    flex: none; /* Mobile par flexible width disable */
+  }
+
+  .filter-wrapper {
+    order: 2; 
+    width: 100%;
+  }
+
+  .filter-config-btn {
+    width: 100%; 
+    justify-content: center;
+    height: 50px;
+  }
+
+  .filter-dropdown-menu {
+    width: 90%;
+    left: 5%;
+    right: 5%;
+    top: 55px;
+    position: absolute;
+  }
+
+  /* CATEGORIES VISIBILITY FIX */
+ .chip-container-premium {
+    order: 3;
+    display: flex !important;
+    visibility: visible !important;
+    overflow-x: auto;
+    padding: 10px 0;
+    margin-top: 5px;
+    border-bottom: 1px solid #f1f5f9; /* Separator */
+  }
+
+  .cat-chip {
+    flex-shrink: 0; /* Tabs ko pichakne se rokta hai */
+  }
+
+  /* SECTION HEADER SPACING FIX */
+.section-head {
+    margin-top: 20px; /* Tabs ke baad gap */
+    padding-top: 10px;
+    display: flex !important;
+    flex-direction: row; 
+    justify-content: space-between;
+    width: 100%;
+    clear: both;
+  }
+
+  .recent-slide-item, 
+  .directory-slide-item {
+    width: 285px !important;
+  }
+
+  .recent-slide-item, 
+  .directory-slide-item {
+    width: 285px !important;
+  }
+
+  /* Common Card Adjustments for Mobile */
+  .premium-recent-card, .directory-card-premium {
+    padding: 18px;
+    border-radius: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .recent-slide-item, .directory-slide-item {
+    width: 260px !important;
+  }
+  
+  .section-head h2 {
+    font-size: 18px;
+  }
+}

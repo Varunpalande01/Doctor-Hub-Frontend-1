@@ -613,6 +613,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./AllServices.css";
+import Logo from "../../assets/images/logo.png"
 
 const AllServicesPage = () => {
   const navigate = useNavigate();
@@ -723,9 +724,9 @@ const AllServicesPage = () => {
           <p className="sidebar-label">Navigation</p>
           <div className="sidebar-nav-link" onClick={() => {navigate("/"); setIsSidebarOpen(false);}}>🏠 Home</div>
           <div className="sidebar-nav-link" onClick={() => {navigate("/about"); setIsSidebarOpen(false);}}>ℹ️ About Us</div>
-                    <div className="sidebar-nav-link active-link">🛠️ Services</div>
+                    <div className="sidebar-nav-link active-side">🛠️ Services</div>
 
-          <div className="sidebar-nav-link" onClick={() => {navigate("/blogs"); setIsSidebarOpen(false);}}>📰 Blogs</div>
+          <div className="sidebar-nav-link" onClick={() => {navigate("/blogs"); setIsSidebarOpen(false);}}>📰 Doctor's Blogs</div>
           <div className="sidebar-nav-link" onClick={() => {navigate("/contact"); setIsSidebarOpen(false);}}>📞 Contact Us</div>
 
           <p className="sidebar-label">SaaS Solutions</p>
@@ -743,7 +744,8 @@ const AllServicesPage = () => {
       {/* --- HEADER --- */}
       <header className="home-header">
         <div className="header-brand" onClick={() => navigate("/")}>
-          <h1>Doctor's <span>Hub</span></h1>
+          <img src={Logo} alt="Doctor's Hub Logo" className="logo-img" />
+    <h1>Doctor's <span>Hub</span></h1>
         </div>
         <nav className="header-nav desktop-only">
           <span className="nav-item" onClick={() => navigate("/")}>Home</span>

@@ -762,7 +762,7 @@ import { useNavigate } from "react-router-dom";
 import { doctorsDummyData } from "../../utils/doctorsDummyData";
 import heroImg from "../../assets/images/doctor1.png";
 import "./Home.css";
-
+import Logo from "../../assets/images/logo.png"
 const HomePage = () => {
   const navigate = useNavigate();
 
@@ -956,15 +956,21 @@ const HomePage = () => {
           )}
 
           <p className="sidebar-label">Navigation</p>
-          <div className="sidebar-link" onClick={() => {navigate("/"); setIsSidebarOpen(false);}}>🏠 Home</div>
+          <div className="sidebar-link active-side" onClick={() => {navigate("/"); setIsSidebarOpen(false);}}>🏠 Home</div>
           <div className="sidebar-link" onClick={() => {navigate("/about"); setIsSidebarOpen(false);}}>ℹ️ About Us</div>
           <div className="sidebar-link" onClick={() => {navigate("/all-services"); setIsSidebarOpen(false);}}>🛠️ Services</div>
-          <div className="sidebar-link" onClick={() => {navigate("/blogs"); setIsSidebarOpen(false);}}>📰 Blogs</div>
+          <div className="sidebar-link" onClick={() => {navigate("/blogs"); setIsSidebarOpen(false);}}>📰 Doctor's Blogs</div>
           <div className="sidebar-link" onClick={() => {navigate("/contact"); setIsSidebarOpen(false);}}>📞 Contact Us</div>
 
           <p className="sidebar-label">SaaS Solutions</p>
           <div className="sidebar-link" onClick={() => setDoctorSub(!doctorSub)}>👨‍⚕️ For Doctors {doctorSub ? "▾" : "▸"}</div>
-          {doctorSub && <div className="sidebar-sub-link" onClick={() => { navigate("/doctor/dashboard"); setIsSidebarOpen(false); }}>→ Dashboard</div>}
+          {doctorSub && 
+          <div className="sidebar-sub-link" onClick={() => { navigate("/doctor/dashboard"); setIsSidebarOpen(false); }}>→ Dashboard</div>}
+          <div className="sidebar-nav-link" onClick={() => setPatientSub(!patientSub)}>
+            👤 For Patients {patientSub ? "▾" : "▸"}
+          </div>
+          {patientSub && <div className="sidebar-sub-link" onClick={() => navigate("/patient/dashboard")}>→ Portal</div>}
+          
         </div>
 
         <div className="sidebar-footer">
@@ -982,14 +988,15 @@ const HomePage = () => {
       {/* ---------------- HEADER (LAPTOP FIX) ---------------- */}
       <header className="home-header">
         <div className="header-brand" onClick={() => navigate("/")}>
-          <h1>Doctor's <span>Hub</span></h1>
+          <img src={Logo} alt="Doctor's Hub Logo" className="logo-img" />
+    <h1>Doctor's <span>Hub</span></h1>
         </div>
 
         <nav className="header-nav desktop-only">
           <span className="nav-item active-tab" onClick={() => navigate("/")}>Home</span>
           <span className="nav-item" onClick={() => navigate("/about")}>About Us</span>
           <span className="nav-item" onClick={() => navigate("/all-services")}>Services</span>
-          <span className="nav-item" onClick={() => navigate("/blogs")}>Doctor'sBlogs</span>
+          <span className="nav-item" onClick={() => navigate("/blogs")}>Doctor's Blogs</span>
           <span className="nav-item" onClick={() => navigate("/contact")}>Contact Us</span>
 
           <div className="nav-item dropdown-toggle" ref={saasRef}>
@@ -1014,7 +1021,7 @@ const HomePage = () => {
           ) : (
             <div className="profile-wrapper desktop-only" ref={dropdownRef}>
               <div className="profile-icon" onClick={() => setDropdownOpen(!dropdownOpen)}>
-                {user.fullName ? user.fullName.charAt(0).toUpperCase() : "P"}
+                {user.fullName ? user.fullName.charAt(0).toUpperCase() : "U"}
               </div>
 
               {dropdownOpen && (
@@ -1058,7 +1065,7 @@ const HomePage = () => {
               <button className="hero-search-btn">Find Doctor</button>
             </div>
             <div className="trending-tags">
-              <span className="trending-label">🔥 Trending:</span>
+              <span className="trending-label">🔥 Common Disease :-</span>
               <div className="tags-flex">
                 {trendingSearches.map((item, idx) => (
                   <span key={idx} className="trend-tag" onClick={() => setSearchQuery(item)}>{item}</span>

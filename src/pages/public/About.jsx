@@ -107,6 +107,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./About.css";
+import Logo from "../../assets/images/logo.png"
 
 const AboutUs = () => {
   const navigate = useNavigate();
@@ -137,11 +138,11 @@ const AboutUs = () => {
         <div className="sidebar-content">
           <p className="sidebar-label">Navigation</p>
           <div className="sidebar-nav-link" onClick={() => {navigate("/"); setIsSidebarOpen(false);}}>🏠 Home</div>
-          <div className="sidebar-nav-link active-link">ℹ️ About Us</div>
+          <div className="sidebar-nav-link active-side">ℹ️ About Us</div>
                     <div className="sidebar-nav-link" onClick={() => {navigate("/all-services"); setIsSidebarOpen(false);}}>🛠️ Services</div>
 
-          <div className="sidebar-nav-link" onClick={() => {navigate("/blogs"); setIsSidebarOpen(false);}}>📰 Blogs</div>
-                    <div className="sidebar-nav-link active-side" onClick={() => {navigate("/contact"); setIsSidebarOpen(false);}}>📞 Contact Us</div>
+          <div className="sidebar-nav-link" onClick={() => {navigate("/blogs"); setIsSidebarOpen(false);}}>📰Doctor's Blogs</div>
+                    <div className="sidebar-nav-link " onClick={() => {navigate("/contact"); setIsSidebarOpen(false);}}>📞 Contact Us</div>
 
           <p className="sidebar-label">SaaS Solutions</p>
           <div className="sidebar-nav-link" onClick={() => setDoctorSub(!doctorSub)}>👨‍⚕️ For Doctors {doctorSub ? "▾" : "▸"}</div>
@@ -158,13 +159,14 @@ const AboutUs = () => {
       {/* --- HEADER --- */}
       <header className="home-header">
         <div className="header-brand" onClick={() => navigate("/")}>
-          <h1>Doctor's <span>Hub</span></h1>
+          <img src={Logo} alt="Doctor's Hub Logo" className="logo-img" />
+    <h1>Doctor's <span>Hub</span></h1>
         </div>
         <nav className="header-nav desktop-only">
           <span className="nav-item" onClick={() => navigate("/")}>Home</span>
           <span className="nav-item active-tab">About Us</span>
           <span className="nav-item" onClick={() => navigate("/all-services")}>Services</span>
-          <span className="nav-item" onClick={() => navigate("/blogs")}>Doctor' Blogs</span>
+          <span className="nav-item" onClick={() => navigate("/blogs")}>Doctor's Blogs</span>
            <span className="nav-item" onClick={() => navigate("/contact")}>Contact Us</span>
           <div className="nav-item dropdown-toggle" ref={saasRef}>
             <span onClick={() => setSaasDropdown(!saasDropdown)}>SaaS For ▾</span>
@@ -254,14 +256,21 @@ const AboutUs = () => {
         </section>
       </main>
 
-      {/* Newsletter Section */}
-      <section className="newsletter-bar">
-        <h3>Stay Updated with Health Tips</h3>
-        <div className="news-input-box">
-          <input type="email" placeholder="Enter your email" />
-          <button>Subscribe</button>
-        </div>
-      </section>
+      {/* --- PREMIUM NEWSLETTER SECTION --- */}
+        <section className="newsletter-premium">
+          <div className="news-card">
+            <div className="news-content">
+              <h3>Stay Healthier. <span>Every Day.</span></h3>
+              <p>Join 10k+ Mumbaikars getting weekly health tips and priority booking alerts.</p>
+            </div>
+            <div className="news-action">
+              <div className="news-input-wrapper">
+                <input type="email" placeholder="Email Address" />
+                <button className="news-submit-btn">Subscribe</button>
+              </div>
+            </div>
+          </div>
+        </section>
 
      <footer className="main-footer">
   <div className="footer-container">

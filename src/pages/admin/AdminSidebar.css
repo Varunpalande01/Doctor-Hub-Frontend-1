@@ -237,3 +237,58 @@
     color: #10b981;
   }
 }
+/* Sidebar Header Styling */
+.sidebar-header {
+  padding: 20px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.full-logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Jab sidebar khula ho */
+.sidebar-logo-img {
+  height: 35px; /* Dashboard ke liye thoda chota size sophisticated lagta hai */
+  width: auto;
+  object-fit: contain;
+  mix-blend-mode: multiply; /* Agar background white hai toh */
+}
+
+/* Jab sidebar band (Collapsed) ho */
+.sidebar-logo-icon {
+  height: 32px;
+  width: 32px;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+.doctor-logo {
+  font-size: 18px !important; /* Dashboard par text thoda professional/chota hona chahiye */
+  font-weight: 800;
+  color: var(--primary);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.doctor-logo span {
+  color: var(--text-dark);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}

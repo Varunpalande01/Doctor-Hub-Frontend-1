@@ -1,146 +1,82 @@
-/* --- PATIENT / SITE HEADER FULL CODE --- */
-
+/* src/pages/patient/PatientHeader.css */
 .patient-header {
-  height: 60px;
-  background: #10b981; /* green for patient panel */
+  height: 64px;
+  background: #10b981;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  font-weight: bold;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0; /* Default mobile full width */
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
 }
 
-.site-header {
-  height: 64px;
-  padding: 0 24px;
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
+/* Laptop Gap Fix */
+@media (min-width: 1025px) {
+  .patient-header {
+    left: 260px; /* Sidebar expanded width */
+  }
+
+  .patient-header.collapsed-header {
+    left: 80px; /* Sidebar collapsed width */
+  }
+}
+
+.header-left {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 15px;
 }
 
-.profile-area {
-  position: relative;
+.hamburger-btn {
+  display: none;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 1024px) {
+  .hamburger-btn {
+    display: flex;
+  }
+}
+
+.header-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
 }
 
 .profile-img {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   cursor: pointer;
-  object-fit: cover; /* Ensures image isn't stretched */
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  object-fit: cover;
 }
 
 .profile-dropdown {
   position: absolute;
-  top: 50px;
-  right: 0;
+  top: 70px;
+  right: 20px;
   background: white;
+  padding: 15px;
+  border-radius: 12px;
+  width: 200px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  z-index: 2000;
   color: #333;
-  padding: 15px; /* Increased slightly for better touch target */
-  border-radius: 6px;
-  width: 180px; /* Slightly wider for better text fit */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  z-index: 100;
-}
-
-.profile-dropdown p {
-  margin: 0;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.profile-dropdown span {
-  font-size: 12px;
-  color: gray;
-  display: block; /* Ensures it stays on its own line */
-}
-
-.profile-dropdown hr {
-  margin: 10px 0;
-  border: none;
-  border-top: 1px solid #eee;
-}
-
-.profile-dropdown a {
-  display: block;
-  color: #10b981;
-  text-decoration: none;
-  margin-top: 5px;
-  font-size: 14px;
-  transition: 0.2s;
-}
-
-.profile-dropdown a:hover {
-  text-decoration: underline;
-}
-
-.logout-button {
-  margin-top: 10px;
-  width: 100%;
-  padding: 8px;
-  border: none;
-  background: #ef4444;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 13px;
-  transition: background 0.2s, transform 0.1s;
-}
-
-.logout-button:hover {
-  background: #dc2626;
-}
-
-.logout-button:active {
-  background: #b91c1c;
-  transform: scale(0.98); /* Added small feedback for "active" */
-}
-
-.logout-button:disabled {
-  background: #fca5a5;
-  cursor: not-allowed;
-}
-
-.logout-button:disabled:hover {
-  background: #fca5a5;
-}
-
-.logout-button:disabled:active {
-  background: #fca5a5;
-}
-
-.logout-button:disabled span {
-  transform: none;
-}
-
-/* --- ALL-SCREEN RESPONSIVE ADDITIONS --- */
-
-@media (max-width: 768px) {
-  .site-header, .patient-header {
-    padding: 0 15px; /* Tighter padding for mobile */
-  }
-  
-  .header-title {
-    font-size: 14px; /* Scaled down for mobile */
-    max-width: 60%; /* Prevents title from hitting profile img */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-
-@media (max-width: 480px) {
-  .profile-dropdown {
-    right: -10px; /* Adjust alignment for very small screens */
-    width: 160px;
-  }
-  
-  /* Prevent horizontal scroll on body if dropdown is open */
-  body {
-    overflow-x: hidden;
-  }
 }

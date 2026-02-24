@@ -9,10 +9,18 @@
 .form-page-header h2 { color: #1e293b; font-size: 24px; font-weight: 800; }
 .form-page-header p { color: #64748b; font-size: 14px; }
 
+/* ✅ Main Grid Layout */
 .form-sections-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 25px;
+  align-items: flex-start; /* Fix for vertical stretching */
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
 .form-card {
@@ -22,8 +30,6 @@
   border: 1px solid #e2e8f0;
   box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
 }
-
-.full-span { grid-column: span 2; }
 
 .form-card h3 {
   font-size: 16px;
@@ -59,43 +65,50 @@
   box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
 }
 
+/* ✅ Personal Details Layout Fix */
+.personal-details-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.2fr;
+  gap: 15px;
+}
+
 textarea { height: 100px; resize: none; }
 
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.form-row-inner { display: flex; gap: 10px; }
 
+/* ✅ Critical Status Styling */
 .critical-checkbox {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-bottom: 15px;
+  background: #fffbeb;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px dashed #f59e0b;
 }
 
 .checkbox-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px; /* Space between checkbox and text */
+  gap: 10px;
 }
 
 .checkbox-wrapper input[type="checkbox"] {
   width: 18px;
   height: 18px;
-  accent-color: #10b981; /* Green checkbox */
+  accent-color: #10b981;
   cursor: pointer;
 }
 
 .checkbox-wrapper label {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 15px;
   cursor: pointer;
+  color: #92400e;
 }
 
 .critical-checkbox small {
   font-size: 12px;
-  color: #4b5563;
-  margin-left: 28px; /* Align small text under label properly */
+  color: #b45309;
+  margin-left: 28px;
 }
-
 
 .error-msg { color: #ef4444; font-size: 12px; }
 
@@ -120,17 +133,13 @@ textarea { height: 100px; resize: none; }
 
 .save-btn:hover { background: #059669; transform: translateY(-2px); }
 
-/* Responsive */
+/* Responsive Media Queries */
 @media (max-width: 1024px) {
   .form-sections-wrapper { grid-template-columns: 1fr; }
-  .full-span { grid-column: span 1; }
 }
 
 @media (max-width: 600px) {
-  .add-patient-container { padding: 15px; }
+  .personal-details-grid { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; gap: 0; }
-  .form-row-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .form-actions { text-align: center; }
   .save-btn { width: 100%; justify-content: center; }
-  .form-card { padding: 15px; }
 }

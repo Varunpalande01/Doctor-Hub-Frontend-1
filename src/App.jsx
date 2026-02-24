@@ -160,11 +160,24 @@ import Profile from "./pages/doctor/Profile";
 
 /* PATIENT PAGES */
 import PatientDashboard from "./pages/patient/Dashboard";
+import PatientProfile from "./pages/patient/PatientProfile"; // ✅ Add this import
+
 
 /* LAYOUTS */
 import AdminLayout from "./components/layout/AdminLayout";
 import DoctorLayout from "./components/layout/DoctorLayout";
 import PatientLayout from "./components/layout/PatientLayout";
+import PatientAppointments from "./pages/patient/MyAppointments";
+import MyDoctors from "./pages/patient/MyDoctors";
+import Prescriptions from "./pages/patient/Prescriptions";
+import Labreports from "./pages/patient/Labreports";
+import Healthsummary from "./pages/patient/Healthsummary";
+import Reminder from "./pages/patient/reminder";
+import Notifications from "./pages/patient/notifications";
+import Feedback from "./pages/patient/Feedback";
+import Help from "./pages/patient/Help";
+import MedicalRecords from "./pages/patient/MedicalRecords";
+
 
 function App() {
   return (
@@ -207,9 +220,26 @@ function App() {
       </Route>
 
       {/* --- PATIENT ROUTES --- */}
-      <Route path="/patient/*" element={<PatientLayout />}>
-        <Route path="dashboard" element={<PatientDashboard />} />
-      </Route>
+      /* PATIENT ROUTES */
+/* --- PATIENT ROUTES --- */
+<Route path="/patient/*" element={<PatientLayout />}>
+  {/* Index route: Taaki sirf /patient likhne par bhi dashboard khule */}
+  <Route index element={<PatientDashboard />} /> 
+  <Route path="dashboard" element={<PatientDashboard />} />
+  <Route path="profile" element={<PatientProfile />} />
+  <Route path="appointments" element={<PatientAppointments />} />
+  
+  {/* Baaki saare routes jo sidebar mein hain unka path yahan define karna zaroori hai */}
+  <Route path="doctors" element={<MyDoctors/>} />
+  <Route path="records" element={<MedicalRecords/>} />
+  <Route path="prescriptions" element={<Prescriptions/>} />
+  <Route path="lab-reports" element={<Labreports/>} />
+  <Route path="health-summary" element={<Healthsummary/>} />
+  <Route path="reminders" element={<Reminder/>} />
+  <Route path="notifications" element={<Notifications/>} />
+  <Route path="feedback" element={<Feedback/>} />
+  <Route path="help" element={<Help/>} />
+</Route>
 
       {/* --- FALLBACK --- */}
       <Route path="*" element={<Home />} />

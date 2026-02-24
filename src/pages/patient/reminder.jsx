@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Prescriptions = () => {
+const Reminder = () => {
   return (
     <div></div>
   )
 }
 
-export default Prescriptions
+export default Reminder

@@ -48,6 +48,7 @@ import {
   FiUserPlus, FiLogOut 
 } from "react-icons/fi"; // Icons import kar liye
 import "./DoctorSidebar.css";
+import Logo from "../../assets/images/logo.png"
 
 const DoctorSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen }) => {
   const [showFooterMenu, setShowFooterMenu] = useState(false);
@@ -83,7 +84,7 @@ const DoctorSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileO
 
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
-    navigate("/login");
+    navigate("/");
   };
 
   // ✅ Updated Menu Array with "Add Patient"
@@ -94,6 +95,7 @@ const DoctorSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileO
     { name: "Add Patient", path: "/doctor/add-patient", icon: <FiUserPlus /> }, // Naya Tab
     { name: "Availability", path: "/doctor/availability", icon: <FiClock /> },
     { name: "Notifications", path: "/doctor/notifications", icon: <FiBell /> },
+    
   ];
 
   return (
@@ -107,11 +109,19 @@ const DoctorSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileO
 
       <aside className={`doctor-sidebar ${isCollapsed ? "collapsed" : "expanded"} ${isMobileOpen ? "mobile-active" : ""}`}>
         <div className="sidebar-header">
-          <div className="logo-area">
-            <h2 className="doctor-logo">
-              {isCollapsed && !isMobileOpen ? "DH" : "Doctor's Hub"}
-            </h2>
-          </div>
+          <div className="logo-area" onClick={() => navigate("/")} style={{ cursor: 'pointer' }}>
+      {/* Jab sidebar collapsed ho aur mobile open na ho, tab sirf chota icon dikhega */}
+      {isCollapsed && !isMobileOpen ? (
+        <img src={Logo} alt="DH" className="sidebar-logo-icon" />
+      ) : (
+        <div className="full-logo-wrapper">
+          <img src={Logo} alt="Doctor's Hub" className="sidebar-logo-img" />
+          <h2 className="doctor-logo">
+            Doctor's <span>Hub</span>
+          </h2>
+        </div>
+      )}
+    </div>
           
           {isMobileOpen ? (
             <button className="mobile-close-btn" onClick={() => {

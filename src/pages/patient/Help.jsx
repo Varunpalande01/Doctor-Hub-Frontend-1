@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Prescriptions = () => {
+const Help = () => {
   return (
     <div></div>
   )
 }
 
-export default Prescriptions
+export default Help

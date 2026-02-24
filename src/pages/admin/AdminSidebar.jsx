@@ -40,6 +40,8 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "./AdminSidebar.css";
+import Logo from "../../assets/images/logo.png"
+
 
 const AdminSidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -68,9 +70,19 @@ const AdminSidebar = () => {
   return (
     <aside className={`admin-sidebar ${isCollapsed ? "collapsed" : ""}`}>
       <div className="sidebar-header">
-        <div className="logo-section">
-          {!isCollapsed && <h2 className="sidebar-logo">Doctor's Hub</h2>}
-        </div>
+        <div className="logo-area"  style={{ cursor: 'pointer' }}>
+             {/* Jab sidebar collapsed ho aur mobile open na ho, tab sirf chota icon dikhega */}
+             
+               <img src={Logo} alt="DH" className="sidebar-logo-icon" />
+            
+               <div className="full-logo-wrapper">
+                 <img src={Logo} alt="Doctor's Hub" className="sidebar-logo-img" />
+                 <h2 className="doctor-logo">
+                   Doctor's <span>Hub</span>
+                 </h2>
+               </div>
+             
+           </div>
         
         <button 
           className="menu-toggle-btn" 

@@ -165,7 +165,7 @@
 //       setLoading(false);
 //       if (validUser.role === "ADMIN") navigate("/admin/dashboard");
 //       else if (validUser.role === "DOCTOR") navigate("/doctor/dashboard");
-//       else navigate("/patient/dashboard");
+//       else navigate("/");
 //     }, 800);
 //   };
 
