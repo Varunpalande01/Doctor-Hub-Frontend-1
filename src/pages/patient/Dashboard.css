@@ -2,7 +2,7 @@
 :root {
   --p-primary: #10b981;
   --p-blue: #3b82f6;
-  --p-dark: #1e293b;
+  --p-dark: #00c1e3;
   --p-light-bg: #f8fafc;
   --p-border: #f1f5f9;
   /* Stronger shadow for better card separation */
@@ -73,7 +73,7 @@
   display: flex; 
   align-items: center; 
   gap: 8px; 
-  color: var(--p-primary); 
+  color: black;
   font-weight: 700; 
   margin-bottom: 5px; 
   font-size: 14px; 
@@ -83,7 +83,7 @@
   font-style: italic; 
   font-size: 13px; 
   margin: 0; 
-  color: var(--p-dark); 
+  color: black; 
 }
 
 /* --- APPOINTMENT CARD --- */
@@ -93,7 +93,7 @@
   padding: 25px;
   border-radius: 24px;
   margin-bottom: 30px;
-  box-shadow: 0 20px 45px rgba(30, 41, 59, 0.25);
+  box-shadow: 0 20px 45px rgba(49, 66, 92, 0.25);
   transition: var(--transition);
 }
 

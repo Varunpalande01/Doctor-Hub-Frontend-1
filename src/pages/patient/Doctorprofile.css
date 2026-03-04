@@ -1,0 +1,213 @@
+:root {
+  --primary: #0f766e;
+  --bg: #f8fafc;
+  --white: #ffffff;
+  --text-dark: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Page */
+.doctor-profile-page {
+  background: var(--bg);
+  min-height: 100vh;
+  padding-bottom: 70px;
+}
+
+/* Hero */
+.profile-hero {
+  background: var(--white);
+  padding: 20px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  box-shadow: var(--shadow);
+}
+
+.profile-hero img {
+  width: 96px;
+  height: 96px;
+  border-radius: 18px;
+  object-fit: cover;
+}
+
+.hero-info h1 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--text-dark);
+}
+
+.degree {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.spec {
+  color: var(--primary);
+  font-weight: 600;
+  margin: 4px 0;
+}
+
+.hero-meta {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.hero-meta span {
+  margin-left: 6px;
+}
+
+.clinic {
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.book-btn {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Content */
+.profile-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.profile-section h2 {
+  font-size: 17px;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+}
+
+.profile-section p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Clinic Card */
+.clinic-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+
+/* Grid */
+.profile-section.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.profile-section.grid div {
+  background: var(--white);
+  padding: 14px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+.profile-section.grid span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.profile-section.grid strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+/* Symptoms */
+.symptoms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.symptoms span {
+  background: #f1f5f9;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+/* Actions */
+.profile-actions {
+  display: flex;
+  gap: 14px;
+}
+
+.primary-btn {
+  flex: 1;
+  padding: 14px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+}
+
+.secondary-btn {
+  flex: 1;
+  padding: 14px;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+}
+
+/* Mobile Sticky Bar */
+.mobile-book-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow);
+}
+
+.mobile-book-bar span {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.mobile-book-bar button {
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+/* Desktop Enhancements */
+@media (min-width: 768px) {
+  .profile-hero {
+    padding: 28px;
+  }
+
+  .hero-info h1 {
+    font-size: 24px;
+  }
+
+  .mobile-book-bar {
+    display: none;
+  }
+}

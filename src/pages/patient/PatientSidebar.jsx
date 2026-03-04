@@ -46,7 +46,8 @@ const PatientSidebar = ({
     items: [
       { name: "Dashboard", path: "/patient/dashboard", icon: <FiGrid /> },
       { name: "Appointments", path: "/patient/appointments", icon: <FiCalendar />, badge: appointmentBadge },
-      { name: "My Doctors", path: "/patient/doctors", icon: <FiUsers /> },
+      { name: "Find Doctors", path: "/patient/finddoctors", icon: <FiUsers /> },
+      { name: "Past Consultations", path: "/patient/mydoctors", icon: <FiUsers /> },
     ]
   },
   {
@@ -55,13 +56,11 @@ const PatientSidebar = ({
       { name: "Medical Records", path: "/patient/records", icon: <FiShield /> }, // 👈 Shield for safety
       { name: "Prescriptions", path: "/patient/prescriptions", icon: <FiClipboard />, badge: prescriptionBadge }, // 👈 Clipboard
       { name: "Lab Reports", path: "/patient/lab-reports", icon: <FiActivity />, badge: reportBadge }, // 👈 Activity for labs
-      { name: "Health Summary", path: "/patient/health-summary", icon: <FiFileText /> },
     ]
   },
   {
     groupName: "Support",
     items: [
-      { name: "Reminders", path: "/patient/reminders", icon: <FiClock /> }, // 👈 Clock for reminders
       { name: "Notifications", path: "/patient/notifications", icon: <FiBell /> },
       { name: "Feedback", path: "/patient/feedback", icon: <FiMessageSquare /> }, // 👈 Message for feedback
       { name: "Help", path: "/patient/help", icon: <FiHelpCircle /> }, // 👈 Help Circle

@@ -1,22 +1,28 @@
 import React, { useState, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "./MyDoctors.css";
-import { DOCTORS } from "../../utils/doctorsDummyprofileData";
+import "./FindDoctors.css";
+import {DOCTORS} from "../../utils/doctorsDummyprofileData"
+const SPECIALTIES = [
+  "All",
+  "Physician",
+  "Dermatologist",
+  "Neurologist",
+  "Cardiologist",
+  "Dentist",
+  "ENT",
+  "Gynecologist",
+  "Psychiatrist",
+  "Pediatrician"
+];
 
-// Show only 10 doctors
-const RECENT_VISITS = DOCTORS.slice(0, 10).map((doc, i) => ({
-  ...doc,
-  lastVisitDate: `2026-02-${10 + (i % 15)}`,
-  feePaid: doc.fee,
-  complaint: ["Headache", "Fever", "Back Pain", "Chest Pain"][i % 4],
-}));
 
-export default function MyDoctors() {
+export default function FindDoctors() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
+  const [activeSpec, setActiveSpec] = useState("All");
   const [selected, setSelected] = useState(null);
 
-  // --- Drag Scroll Logic ---
+  /* --- Drag Scroll Logic (Desktop) --- */
   const isDown = useRef(false);
   const startX = useRef(0);
   const scrollLeft = useRef(0);
@@ -41,37 +47,53 @@ export default function MyDoctors() {
     e.currentTarget.scrollLeft = scrollLeft.current - walk;
   };
 
-  // --- Filtering ---
+  /* --- Filtering --- */
   const filteredDoctors = useMemo(() => {
-    return RECENT_VISITS.filter((d) => {
+    return DOCTORS.filter((d) => {
       const text = `
         ${d.name}
         ${d.specialty}
-        ${d.clinicName}
+        ${d.location}
         ${d.city}
-        ${d.complaint}
+        ${d.clinicName}
+        ${d.fee}
       `.toLowerCase();
-      return text.includes(search.toLowerCase());
+
+      return (
+        text.includes(search.toLowerCase()) &&
+        (activeSpec === "All" || d.specialty === activeSpec)
+      );
     });
-  }, [search]);
+  }, [search, activeSpec]);
 
   return (
     <div className="find-doctor-container">
-      <h1>My Doctors</h1>
+      <h1>Find Doctors</h1>
 
-      {/* Search */}
       <div className="search-wrapper">
-        <input
-          className="doctor-search"
-          placeholder="Search doctor, specialty, complaint…"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+  <input
+    className="doctor-search"
+    placeholder="Search doctor, clinic, area, fee…"
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+  />
+</div>
+
+      <div className="specialty-tabs">
+        {SPECIALTIES.map((s) => (
+          <button
+            key={s}
+            className={`spec-chip ${activeSpec === s ? "active" : ""}`}
+            onClick={() => setActiveSpec(s)}
+          >
+            {s}
+          </button>
+        ))}
       </div>
 
-      {/* Doctor Rows */}
+      {/* --- Rows --- */}
       <div className="doctor-rows">
-        {[0, 1].map((row) => (
+        {[0, 1, 2].map((row) => (
           <div
             key={row}
             className="doctor-row"
@@ -80,7 +102,7 @@ export default function MyDoctors() {
             onMouseLeave={handleMouseUpLeave}
             onMouseMove={handleMouseMove}
           >
-            {filteredDoctors.slice(row * 5, row * 5 + 5).map((doc) => (
+            {filteredDoctors.slice(row * 8, row * 8 + 8).map((doc) => (
               <div
                 key={doc.id}
                 className="doctor-card"
@@ -93,24 +115,34 @@ export default function MyDoctors() {
                 <div className="card-right">
                   <h3 className="doc-name">{doc.name}</h3>
                   <p className="spec">{doc.specialty}</p>
+
                   <div className="row">
                     ⭐ {doc.rating} • {doc.experience} yrs
                   </div>
-                  <div className="row clinic">{doc.clinicName}</div>
-                  <div className="row location">📍 {doc.city}</div>
+
+                  <div className="row clinic">
+                    {doc.clinicName}
+                  </div>
+
+                  <div className="row location">
+                    📍 {doc.location}, {doc.city}
+                  </div>
+
                   <div className="row fee">
-                    <span className="fee-badge">₹ {doc.feePaid} Paid</span>
+                    ₹ {doc.fee}
                   </div>
                 </div>
 
-                <span className="badge">Last Visit: {doc.lastVisitDate}</span>
+                {doc.availableToday && (
+                  <span className="badge">Today</span>
+                )}
               </div>
             ))}
           </div>
         ))}
       </div>
 
-      {/* --- Modal --- */}
+      {/* --- Popup --- */}
       {selected && (
         <div className="doctor-modal">
           <div className="modal-card">
@@ -126,21 +158,24 @@ export default function MyDoctors() {
 
             <div className="modal-meta">
               <span>🏥 {selected.clinicName}</span>
-              <span>📍 {selected.clinicAddress}, {selected.city}</span>
+              <span>📍 {selected.clinicAddress}</span>
               <span>🗣 {selected.languages.join(", ")}</span>
               <span>📄 Reg No: {selected.registrationNo}</span>
               <span>⭐ {selected.rating}</span>
               <span>💼 {selected.experience} yrs</span>
-              <span className="fee-badge">💰 Fee Paid: ₹ {selected.feePaid}</span>
-              <span className="complaint-badge">⚕️ Complaint: {selected.complaint}</span>
-              <span>📅 Last Visit: {selected.lastVisitDate}</span>
+              <span>💰 ₹ {selected.fee}</span>
             </div>
 
             <div className="modal-actions">
-              <button className="primary-btn">Book Appointment</button>
+              <button className="primary-btn">
+                Book Appointment
+              </button>
+
               <button
                 className="secondary-btn"
-                onClick={() => navigate(`/patient/doctorsprofile/${selected.id}`)}
+                onClick={() =>
+                  navigate(`/patient/doctorsprofile/${selected.id}`)
+                }
               >
                 View Full Profile
               </button>

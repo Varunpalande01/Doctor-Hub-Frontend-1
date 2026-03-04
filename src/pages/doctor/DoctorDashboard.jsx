@@ -174,7 +174,12 @@ const DoctorDashboard = () => {
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: { legend: { position: "bottom" } }
+    plugins: { 
+      legend: { 
+        position: "bottom",
+        labels: { boxWidth: 12, font: { size: 11 } } 
+      } 
+    }
   };
 
   const barData = {
@@ -198,14 +203,14 @@ const DoctorDashboard = () => {
 
   return (
     <div className="doctor-dashboard-container">
-      {/* 1. PROFILE ALERT */}
+      {/* 1. PROFILE ALERT BOX */}
       {profileCompletion < 100 && (
         <div className="profile-alert-box">
           <div className="alert-content-left">
             <span className="icon-warning">⚠️</span>
-            <div>
+            <div className="alert-text-wrapper">
               <h4>Complete Your Profile</h4>
-              <p>Your profile is {profileCompletion}% completed. Finish it to accept appointments.</p>
+              <p>Your profile is {profileCompletion}% completed.</p>
             </div>
           </div>
           <div className="alert-content-right">
@@ -219,7 +224,7 @@ const DoctorDashboard = () => {
         </div>
       )}
 
-      {/* 2. STATS GRID */}
+      {/* 2. STATS CARDS */}
       <div className="stats-grid">
         <div className="stat-card">
           <span className="label">Total Patients</span>
@@ -235,10 +240,12 @@ const DoctorDashboard = () => {
         </div>
       </div>
 
-      {/* 3. ADAPTIVE APPOINTMENTS TABLE */}
+      {/* 3. APPOINTMENTS SECTION */}
       <div className="appointments-section">
         <h4 className="section-title">Today's Appointments</h4>
-        <div className="table-wrapper">
+        
+        {/* Desktop Table View */}
+        <div className="desktop-table-view">
           <table className="doctor-data-table">
             <thead>
               <tr>
@@ -250,10 +257,9 @@ const DoctorDashboard = () => {
             <tbody>
               {todaysAppointments.map((item) => (
                 <tr key={item.id}>
-                  {/* data-label is the secret to show name on mobile */}
-                  <td data-label="TIME">{item.time}</td>
-                  <td data-label="NAME" className="name-highlight">{item.patient}</td>
-                  <td data-label="STATUS">
+                  <td>{item.time}</td>
+                  <td className="name-highlight">{item.patient}</td>
+                  <td>
                     <span className={`badge-status ${item.status.toLowerCase().replace(/\s+/g, '-')}`}>
                       {item.status}
                     </span>
@@ -263,9 +269,31 @@ const DoctorDashboard = () => {
             </tbody>
           </table>
         </div>
+
+        {/* Mobile Card View (Hidden on Desktop) */}
+        <div className="mobile-cards-view">
+          {todaysAppointments.map((item) => (
+            <div className="appointment-mobile-card" key={item.id}>
+              <div className="card-row">
+                <span className="card-label">TIME</span>
+                <span className="card-value time-val">{item.time}</span>
+              </div>
+              <div className="card-row">
+                <span className="card-label">PATIENT</span>
+                <span className="card-value name-val">{item.patient}</span>
+              </div>
+              <div className="card-row">
+                <span className="card-label">STATUS</span>
+                <span className={`badge-status ${item.status.toLowerCase().replace(/\s+/g, '-')}`}>
+                  {item.status}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* 4. CHARTS GRID */}
+      {/* 4. CHARTS SECTION */}
       <div className="dashboard-charts">
         <div className="chart-item">
           <h5>New Patients (Monthly)</h5>

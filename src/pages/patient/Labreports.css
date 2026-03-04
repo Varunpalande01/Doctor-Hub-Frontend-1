@@ -1,0 +1,157 @@
+:root {
+  --primary: #0f766e;
+  --text-dark: #000000;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --bg: #f8fafc;
+  --white: #ffffff;
+  --shadow: 0 6px 25px rgba(0, 0, 0, 0.05);
+}
+a {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.lab-container {
+  padding: 24px;
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+.lab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.lab-header h1 {
+  font-size: 28px;
+  color: var(--text-dark);
+}
+
+.lab-header p {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.upload-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary);
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+.upload-btn:hover {
+  transform: translateY(-2px);
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--white);
+  padding: 14px 18px;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  background: transparent;
+}
+
+.reports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.report-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--white);
+  padding: 18px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  transition: 0.3s ease;
+}
+
+.report-card:hover {
+  transform: translateY(-3px);
+}
+
+.report-left {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.report-left h3 {
+  font-size: 15px;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.report-left p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.report-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.report-right button {
+  background: #f1f5f9;
+  border: none;
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.report-right button:hover {
+  background: #e2e8f0;
+}
+
+.no-data {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px 0;
+  font-size: 14px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .lab-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .report-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .report-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

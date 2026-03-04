@@ -2,8 +2,9 @@
   --primary: #10b981;
   --primary-dark: #059669;
   --bg-soft: #f8fafc;
-  --text-dark: #0f172a;
+  --text-dark: #000000;
   --text-light: #64748b;
+  --text-body: #000000; /* Standard Dark Grey for readability */
   --white: #ffffff;
   --border: #e2e8f0;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
@@ -11,8 +12,25 @@
 }
 
 /* Base Styles */
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-body { background: var(--bg-soft); color: var(--text-dark); overflow-x: hidden; }
+* { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+  font-family: 'Inter', sans-serif; 
+}
+body { 
+  background: var(--bg-soft); 
+  color: var(--text-dark); /* Default black text */
+  overflow-x: hidden; 
+  line-height: 1.5;
+}
+/* Specifically forcing headings and paragraphs to be dark */
+h1, h2, h3, h4, h5, h6 { color: var(--text-dark); }
+p, span, li, td, th { color: var(--text-body); }
+a, a:hover, a:visited, a:active { 
+  text-decoration: none !important; 
+  color: inherit !important; 
+}
 
 /* ==========================================
    HEADER AUTH & PROFILE ALIGNMENT FIX
@@ -392,30 +410,80 @@ body { background: var(--bg-soft); color: var(--text-dark); overflow-x: hidden; 
 .hero-visual { display: flex; justify-content: flex-end; }
 .hero-visual img { width: 100%; max-width: 420px; border-radius: 30px; }
 
-/* Doctor Grid */
+/* ==========================================
+   DOCTOR GRID (STRICT COLOR FIX)
+   ========================================== */
 .doctors-section { padding: 60px 8%; background: white; border-top: 1px solid var(--border); }
-.section-header-pro { text-align: center; margin-bottom: 40px; }
-.section-header-pro h2 { font-size: 28px; font-weight: 900; }
-.accent-line-small { width: 40px; height: 4px; background: var(--primary); margin: 12px auto; border-radius: 10px; }
 
-.doctor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-.doctor-card-pro { background: white; border-radius: 20px; border: 1px solid var(--border); overflow: hidden; transition: 0.3s; display: flex; flex-direction: column; cursor: pointer; }
-.doctor-card-pro:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 15px 30px rgba(0,0,0,0.08); }
+.doctor-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+  gap: 20px; 
+}
+
+.doctor-card-pro { 
+  background: white; 
+  border-radius: 20px; 
+  border: 1px solid var(--border); 
+  overflow: hidden; 
+  transition: 0.3s; 
+  display: flex; 
+  flex-direction: column; 
+  cursor: pointer;
+  color: var(--text-dark) !important;
+}
+
+.doctor-card-pro:hover { 
+  transform: translateY(-5px); 
+  border-color: var(--primary); 
+  box-shadow: 0 15px 30px rgba(0,0,0,0.08); 
+}
 
 .doc-image-box { height: 180px; position: relative; }
 .doc-image-box img { width: 100%; height: 100%; object-fit: cover; }
-.doc-experience-badge { position: absolute; bottom: 10px; right: 10px; background: rgba(15, 23, 42, 0.8); color: white; padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: 700; }
+.doc-experience-badge { 
+  position: absolute; bottom: 10px; right: 10px; 
+  background: rgba(0, 0, 0, 0.7); color: white; 
+  padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: 700; 
+}
 
-.doc-content-box { padding: 15px; flex: 1; display: flex; flex-direction: column; }
-.doc-specialty-pill { background: #ecfdf5; color: var(--primary); padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; width: fit-content; }
-.doc-name-text { font-size: 17px; font-weight: 800; margin: 10px 0 5px; color: var(--text-dark); }
-.doc-info-meta p { font-size: 13px; color: var(--text-light); margin-bottom: 4px; }
-.doc-fee-text { color: var(--text-dark) !important; font-weight: 800; font-size: 14px !important; margin-top: 5px; }
+.doc-content-box { 
+  padding: 15px; flex: 1; display: flex; flex-direction: column; 
+  color: var(--text-dark) !important; 
+}
+
+.doc-specialty-pill { 
+  background: #ecfdf5; color: var(--primary) !important; 
+  padding: 3px 10px; border-radius: 6px; font-size: 11px; 
+  font-weight: 800; width: fit-content; 
+}
+
+.doc-name-text { 
+  font-size: 17px; font-weight: 800; margin: 10px 0 5px; 
+  color: var(--text-dark) !important; /* Fixed Blue issue */
+}
+
+.doc-info-meta p { 
+  font-size: 13px; color: var(--text-light) !important; 
+  margin-bottom: 4px; 
+}
+
+.doc-fee-text { 
+  color: var(--text-dark) !important; 
+  font-weight: 800; font-size: 14px !important; margin-top: 5px; 
+}
 
 .doc-card-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; padding-top: 15px; }
-.view-profile-pro { background: #f1f5f9; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 12px; cursor: pointer; }
-.book-now-pro { background: var(--primary); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 12px; cursor: pointer; }
-
+.view-profile-pro { 
+  background: #f1f5f9; border: none; padding: 10px; 
+  border-radius: 10px; font-weight: 700; font-size: 12px; 
+  cursor: pointer; color: var(--text-dark) !important;
+}
+.book-now-pro { 
+  background: var(--primary); color: white !important; 
+  border: none; padding: 10px; border-radius: 10px; 
+  font-weight: 700; font-size: 12px; cursor: pointer; 
+}
 /* Ad Banner */
 .hospital-ad-section { padding: 10px 8% 40px; z-index: 1; position: relative; }
 .hospital-ad-card { 
@@ -426,7 +494,7 @@ body { background: var(--bg-soft); color: var(--text-dark); overflow-x: hidden; 
   overflow: hidden;
 }
 .ad-badge { background: var(--primary); color: white; padding: 5px 14px; border-radius: 100px; font-size: 11px; font-weight: 800; margin-bottom: 12px; display: inline-block; }
-.ad-content-left h3 { font-size: 26px; font-weight: 800; margin-bottom: 10px; }
+.ad-content-left h3 { font-size: 26px; font-weight: 800; margin-bottom: 10px; color: white;  }
 .ad-content-left p { color: #cbd5e1; font-size: 15px; max-width: 600px; }
 .visit-hosp-btn { background: white; color: #0f172a; border: none; padding: 14px 28px; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; white-space: nowrap; }
 .visit-hosp-btn:hover { background: var(--primary); color: white; transform: scale(1.05); }
@@ -449,7 +517,7 @@ body { background: var(--bg-soft); color: var(--text-dark); overflow-x: hidden; 
 .cost-card-styled { 
   background: var(--white); padding: 50px 30px 35px; border-radius: 30px; text-align: center;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid var(--border);
-  position: relative; display: flex; flex-direction: column; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+  position: relative; display: flex; flex-direction: column; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);color: var(--text-dark);
 }
 .cost-card-styled:hover { transform: translateY(-15px); border-color: var(--primary); box-shadow: 0 30px 60px -15px rgba(16, 185, 129, 0.2); }
 .pkg-badge { position: absolute; top: 0; right: 30px; background: var(--primary); color: white; padding: 8px 15px; font-size: 11px; font-weight: 800; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; text-transform: uppercase; }
@@ -619,4 +687,211 @@ body { background: var(--bg-soft); color: var(--text-dark); overflow-x: hidden; 
         background: white !important;
         border: 1px solid var(--border) !important;
     }
+}
+.showcase-section {
+  padding: 60px 8%;
+  background: #f9fafb;
+  position: relative;
+}
+
+.showcase-section .section-header-pro h2 {
+  font-size: 2.5rem;
+  margin-bottom: 5px;
+  font-weight: 900;
+}
+
+.showcase-section .section-header-pro span {
+  color: var(--primary);
+}
+
+.showcase-section .section-sub-tag {
+  font-size: 14px;
+  color: var(--text-light);
+  margin-bottom: 25px;
+}
+
+.showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+}
+
+.showcase-card {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.showcase-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.showcase-card h3 {
+  font-size: 18px;
+  margin: 10px 0 8px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.showcase-card p {
+  font-size: 14px;
+  color: var(--text-light);
+  margin-bottom: 10px;
+}
+
+.showcase-type {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.showcase-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+}
+
+/* Badge colors */
+.badge-new { background: var(--primary); }
+.badge-featured { background: #f59e0b; } /* orange */
+.badge-alert { background: #ef4444; } /* red */
+/* Popup overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 15px;
+}
+
+/* Popup content box */
+.popup-content {
+  background: white;
+  padding: 30px 25px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+/* Buttons group: horizontal */
+.popup-btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* Know More - bada button */
+.popup-btn-knowmore {
+  flex: 1 1 65%; /* bada button */
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 0;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.popup-btn-knowmore:hover {
+  background: #059669; /* thoda dark green hover */
+}
+
+/* Close - chota button */
+.popup-btn-close {
+  flex: 1 1 30%; /* chota button */
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 12px 0;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.popup-btn-close:hover {
+  background: #dc2626; /* thoda dark red hover */
+}
+
+/* Popup text */
+.popup-content h3 {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+}
+.popup-content p {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+/* --- POPUP MODAL CSS --- */
+.modal-overlay {
+  position: fixed; top:0; left:0; width:100%; height:100%;
+  background: rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center;
+  z-index: 10000;
+}
+
+.cost-modal-card {
+  background: var(--white); border-radius: 20px; padding: 25px 30px;
+  max-width: 500px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  position: relative; animation: popupFade 0.3s ease-out;
+}
+
+@keyframes popupFade {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-close-x {
+  position: absolute; top: 15px; right: 15px; background: #fee2e2;
+  color: #dc2626; border:none; font-size:20px; font-weight:700; cursor:pointer;
+  width:35px; height:35px; border-radius:50%;
+}
+
+.modal-header {
+  display: flex; flex-direction: column; align-items: center; gap:10px;
+  margin-bottom:15px; text-align:center;
+}
+
+.cost-icon-circle-large {
+  width:70px; height:70px; border-radius:50%; background: var(--primary);
+  color:white; display:flex; align-items:center; justify-content:center;
+  font-size:30px; font-weight:700; box-shadow:0 4px 12px rgba(16,185,129,0.3);
+}
+
+.know-more-btn {
+  margin-top:20px; width:100%; padding:12px; background: var(--primary);
+  color:white; font-weight:700; border:none; border-radius:12px; cursor:pointer;
+  transition: all 0.3s ease;
+}
+
+.know-more-btn:hover { background: var(--primary-dark); }
+
+/* --- Mobile responsive remains intact --- */
+@media (max-width: 768px) {
+  .costs-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; padding: 0 10px !important; }
+  .cost-card-styled { padding: 15px 10px !important; border-radius:16px !important; }
+  .cost-icon-circle { width:45px !important; height:45px !important; font-size:22px !important; }
+  .cost-price-tag { font-size:15px !important; }
+  .pkg-badge { font-size:8px !important; padding:3px 8px !important; right:10px !important; }
+  .pkg-book-btn { padding:8px !important; font-size:11px !important; border-radius:10px !important; margin-top:auto; }
 }

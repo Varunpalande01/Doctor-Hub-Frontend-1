@@ -1,61 +1,14 @@
-// // src/components/admin/AdminSidebar.jsx
-// import React from "react";
-// import { NavLink } from "react-router-dom";
-// import "./AdminSidebar.css";
-
-// const AdminSidebar = () => {
-//   const menu = [
-//     { name: "Dashboard", path: "/admin/dashboard" },
-//     { name: "Doctors", path: "/admin/doctors" },
-//     { name: "Pending Verification", path: "/admin/verify-doctors" },
-//     { name: "Doctors Management", path: "/admin/doctors-management" },
-//     { name: "Users", path: "/admin/users" },
-//     { name: "Hospitals", path: "/admin/hospitals" },
-//     { name: "Labs", path: "/admin/labs" },
-//     { name: "Appointments", path: "/admin/appointments" },
-//     { name: "System Logs", path: "/admin/system-logs" },
-//   ];
-
-//   return (
-//     <aside className="admin-sidebar">
-//       <h2 className="sidebar-logo">Admin Panel</h2>
-//       <ul>
-//         {menu.map((item) => (
-//           <li key={item.name}>
-//             <NavLink
-//               to={item.path}
-//               className={({ isActive }) => (isActive ? "active" : "")}
-//             >
-//               {item.name}
-//             </NavLink>
-//           </li>
-//         ))}
-//       </ul>
-//     </aside>
-//   );
-// };
-
-// export default AdminSidebar;
-
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiX,
+} from "react-icons/fi";
 import "./AdminSidebar.css";
-import Logo from "../../assets/images/logo.png"
+import Logo from "../../assets/images/logo.png";
 
-
-const AdminSidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 1024) setIsCollapsed(true);
-      else setIsCollapsed(false);
-    };
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
+const AdminSidebar = ({ isCollapsed, setIsCollapsed }) => {
   const menu = [
     { name: "Dashboard", path: "/admin/dashboard", icon: "📊" },
     { name: "Doctors", path: "/admin/doctors", icon: "👨‍⚕️" },
@@ -65,53 +18,116 @@ const AdminSidebar = () => {
     { name: "Labs", path: "/admin/labs", icon: "🧪" },
     { name: "Appointments", path: "/admin/appointments", icon: "📅" },
     { name: "System Logs", path: "/admin/system-logs", icon: "📑" },
+    { name: "Feedback", path: "/admin/FeedbackPage", icon: "💬" }
   ];
 
-  return (
-    <aside className={`admin-sidebar ${isCollapsed ? "collapsed" : ""}`}>
-      <div className="sidebar-header">
-        <div className="logo-area"  style={{ cursor: 'pointer' }}>
-             {/* Jab sidebar collapsed ho aur mobile open na ho, tab sirf chota icon dikhega */}
-             
-               <img src={Logo} alt="DH" className="sidebar-logo-icon" />
-            
-               <div className="full-logo-wrapper">
-                 <img src={Logo} alt="Doctor's Hub" className="sidebar-logo-img" />
-                 <h2 className="doctor-logo">
-                   Doctor's <span>Hub</span>
-                 </h2>
-               </div>
-             
-           </div>
-        
-        <button 
-          className="menu-toggle-btn" 
-          onClick={() => setIsCollapsed(!isCollapsed)}
-        >
-          <div className={`hamburger ${isCollapsed ? "is-active" : ""}`}>
-            <span className="line"></span>
-            <span className="line"></span>
-            <span className="line"></span>
-          </div>
-        </button>
-      </div>
+  // Mobile resize handling
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setIsCollapsed(true);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [setIsCollapsed]);
 
-      <nav className="admin-nav">
-        <ul className="admin-menu">
-          {menu.map((item) => (
-            <li key={item.name} className="menu-item">
-              <NavLink
-                to={item.path}
-                className={({ isActive }) => (isActive ? "admin-link active" : "admin-link")}
-              >
-                <span className="menu-icon">{item.icon}</span>
-                {!isCollapsed && <span className="menu-text">{item.name}</span>}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </aside>
+  const isMobile = window.innerWidth < 1024;
+
+  return (
+    <>
+      {/* Mobile Overlay */}
+      {!isCollapsed && isMobile && (
+        <div
+          className="sidebar-mobile-overlay"
+          onClick={() => setIsCollapsed(true)}
+        ></div>
+      )}
+
+      <aside
+        className={`admin-sidebar ${
+          isCollapsed ? "collapsed" : "expanded"
+        }`}
+      >
+        {/* ===== HEADER ===== */}
+        <div className="sidebar-header">
+          <div className="logo-area">
+            {isCollapsed && !isMobile ? (
+              <img
+                src={Logo}
+                alt="Logo"
+                className="sidebar-logo-mini"
+              />
+            ) : (
+              <>
+                <img
+                  src={Logo}
+                  alt="Logo"
+                  className="sidebar-logo-img"
+                />
+                <h2 className="admin-logo">
+                  Doctor<span>Hub</span>
+                </h2>
+              </>
+            )}
+          </div>
+
+          {/* Toggle Button */}
+          {isMobile ? (
+            <button
+              className="mobile-close-btn"
+              onClick={() => setIsCollapsed(true)}
+            >
+              <FiX />
+            </button>
+          ) : (
+            <button
+              className="collapse-btn"
+              onClick={() => setIsCollapsed(!isCollapsed)}
+            >
+              {isCollapsed ? <FiChevronRight /> : <FiChevronLeft />}
+            </button>
+          )}
+        </div>
+
+        {/* ===== NAV ===== */}
+        <nav className="admin-nav">
+          <ul className="admin-menu">
+            {menu.map((item) => (
+              <li key={item.name} className="menu-item">
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) =>
+                    isActive
+                      ? "admin-link active"
+                      : "admin-link"
+                  }
+                  onClick={() =>
+                    isMobile && setIsCollapsed(true)
+                  }
+                >
+                  <span className="menu-icon">{item.icon}</span>
+
+                  {!isCollapsed && (
+                    <span className="menu-text">
+                      {item.name}
+                    </span>
+                  )}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* ===== FOOTER ===== */}
+        {!isCollapsed && (
+          <div className="sidebar-footer-info">
+            <p>Admin Control Panel</p>
+            <span>v1.0.2</span>
+          </div>
+        )}
+      </aside>
+    </>
   );
 };
 

@@ -3,7 +3,7 @@
   --primary: #10b981; /* Wahi Book Now wala Green */
   --primary-dark: #059669;
   --bg-soft: #f8fafc;
-  --text-dark: #0f172a;
+  --text-dark: #000000;
   --text-light: #64748b;
   --border: #e2e8f0;
   --white: #ffffff;
@@ -169,6 +169,7 @@
   padding: 30px;
   display: flex;
   flex-direction: column;
+  color: #000000;
 }
 
 .mobile-sidebar.open {
@@ -216,7 +217,7 @@
 
 .hero-badge {
   background: rgba(16, 185, 129, 0.2);
-  color: var(--primary);
+  color:white;
   padding: 6px 16px;
   border-radius: 20px;
   font-weight: 700;
@@ -228,6 +229,8 @@
   font-size: 3.5rem;
   margin: 20px 0;
   font-weight: 800;
+    color:white;
+
 }
 
 .hero-overlay h2 span {
@@ -239,6 +242,7 @@
   margin: 0 auto;
   font-size: 1.2rem;
   opacity: 0.9;
+  color: white;
 }
 
 /* --- VALUES SECTION --- */

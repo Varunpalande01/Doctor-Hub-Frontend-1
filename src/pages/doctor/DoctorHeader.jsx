@@ -73,8 +73,7 @@
 
 
 
-
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./DoctorHeader.css";
 
@@ -82,58 +81,97 @@ const DoctorHeader = ({ setIsMobileOpen }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const dropdownRef = useRef(null); // Ab ye pure header ya right section ko track karega
+  
   const user = JSON.parse(localStorage.getItem("currentUser"));
+
+  // Click outside to close dropdown fix
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Agar click dropdown ke andar nahi hai, tabhi band karo
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
-    navigate("/login");
+    setDropdownOpen(false); // Close dropdown before navigating
+    navigate("/");
   };
 
   const routeTitles = {
     "/doctor/dashboard": "Dashboard Overview",
     "/doctor/appointments": "My Appointments",
     "/doctor/patients": "Patient Records",
-   "/doctor/add-patient": "Add New Patient",// Naya Tab
-    "/doctor/availability": "Set Availability",
     "/doctor/profile": "My Profile",
-    "/doctor/notifications": "Notifications"
+    "/doctor/Availability": "Availability",
+    "/doctor/Labs": "Labs ",
+    "/doctor/Notifications": "Notifications",
     
   };
 
   return (
     <header className="doctor-header">
       <div className="header-left">
-        {/* Mobile menu button */}
         <button className="mobile-toggle" onClick={() => setIsMobileOpen(true)}>
           ☰
         </button>
-        
-        {/* Page Title - Spaced and Enlarged */}
         <h3 className="page-title">
           {routeTitles[location.pathname] || "Doctor Hub"}
         </h3>
       </div>
 
-      <div className="header-right">
-        <div className="header-profile-section" onClick={() => setDropdownOpen(!dropdownOpen)}>
+      {/* dropdownRef ko yahan rakha taaki iske andar ka click "Outside" na mane */}
+      <div className="header-right" ref={dropdownRef}>
+        <div 
+          className="header-profile-section" 
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+        >
           <div className="profile-info">
             <span className="profile-name">Dr. {user?.fullName || "Sameer"}</span>
-            <span className="profile-role">{user?.role || "Surgeon"}</span>
           </div>
-          <img src="https://i.pravatar.cc/150?img=12" alt="Avatar" className="header-avatar" />
-          
-          {dropdownOpen && (
-            <div className="header-dropdown-menu">
-              <button onClick={() => { navigate("/doctor/profile"); setDropdownOpen(false); }}>
-                👤 My Profile
-              </button>
-              <hr className="dropdown-divider" />
-              <button className="logout-btn-text" onClick={handleLogout}>
-                🚪 Logout
-              </button>
-            </div>
-          )}
+          <img 
+            src="https://i.pravatar.cc/150?img=12" 
+            alt="Avatar" 
+            className="header-avatar" 
+          />
         </div>
+
+        {/* Dropdown ko wapas andar laya navigation fix karne ke liye, CSS se width handle ki hai */}
+        {dropdownOpen && (
+          <div className="header-dropdown-menu">
+            <div className="dropdown-user-info">
+              <span className="name">{user?.fullName || "Dr. Sameer"}</span>
+              <span className="role">{user?.role || "SURGEON"}</span>
+            </div>
+            
+            <button 
+              type="button" 
+              onClick={(e) => {
+                e.stopPropagation(); // Click event ko bubble hone se roko
+                navigate("/doctor/profile");
+                setDropdownOpen(false);
+              }}
+            >
+              <span>👤</span> My Profile
+            </button>
+
+            <button 
+              type="button" 
+              className="logout-btn-text" 
+              onClick={(e) => {
+                e.stopPropagation();
+                handleLogout();
+              }}
+            >
+              <span>🚪</span> Logout
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );

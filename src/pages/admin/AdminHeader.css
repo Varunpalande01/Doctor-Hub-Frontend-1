@@ -1,170 +1,223 @@
-/* --- ADMIN HEADER MAIN --- */
 .admin-header {
   height: 65px;
-  background: #10b981; 
+  background: #10b981;
   color: white;
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
-  border-radius: 0 0 15px 15px;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-  position: sticky; /* Keep it at the top while scrolling */
+  padding: 0 25px;
+  position: sticky;
   top: 0;
   z-index: 1000;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.15);
+  width: 100%;
+  margin-right: calc(-1 * clamp(15px, 3vw, 30px));
+  
+  box-sizing: border-box;
 }
-
-/* Left Side: Title */
-.header-page-title {
-  font-size: 18px;
-  font-weight: 700;
+/* global css: index.css / App.css */
+html, body {
   margin: 0;
-  letter-spacing: 0.5px;
+  padding: 0;
+  height: 100%;
 }
-
-/* Right Side: Profile */
-.admin-header-right {
+/* LEFT */
+.header-left {
   display: flex;
   align-items: center;
+  gap: 15px;
+}
+.header-dropdown-menu,
+.header-dropdown-menu * {
+  white-space: nowrap;      /* 🔥 vertical line ka main killer */
 }
 
-.profile-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  position: relative;
+.mobile-nav-toggle {
+  display: none;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 22px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
-.welcome-text {
-  font-weight: 500;
-  font-size: 14px;
-  white-space: nowrap;
+.page-main-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
 }
 
-.profile-img {
+/* RIGHT */
+.header-right {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: 0.3s;
+}
+
+.profile-trigger:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.admin-info-text {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.greet {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.name {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.img-container {
+  position: relative;
+}
+
+.admin-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(255, 255, 255, 0.6);
   object-fit: cover;
-  transition: transform 0.2s;
 }
 
-.profile-img:hover {
-  transform: scale(1.05);
-}
-
-/* --- DROPDOWN MENU --- */
-.profile-dropdown {
+.online-indicator {
   position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 10px;
+  height: 10px;
+  background: #4ade80;
+  border-radius: 50%;
+  border: 2px solid #10b981;
+}
+
+/* ================= DROPDOWN ================= */
+
+.header-dropdown-menu {
+  position: absolute;
+  top: 75px;
   right: 0;
-  top: 55px;
-  background: #ffffff;
-  color: #111827;
+  background: white;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  width: 200px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+   min-width: 220px;         /* 🔥 MUST */
+  max-width: 260px;
+  width: auto;
   padding: 15px;
-  display: flex;
+  border: 1px solid #e2e8f0;
+  z-index: 2000;
+  display: block;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
   animation: slideDown 0.2s ease-out;
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.dropdown-info {
-  padding-bottom: 5px;
+.dropdown-user-info {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 5px;
 }
 
-.dropdown-name {
+.dropdown-user-info .name {
+  display: block;
   font-weight: 700;
+  color: #1e293b;
   font-size: 15px;
-  margin: 0;
-  color: #111827;
 }
 
-.dropdown-role {
-  font-size: 12px;
-  color: #6b7280;
+.dropdown-user-info .role {
+  display: block;
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-top: 4px;
 }
 
-.dropdown-divider {
-  border: 0;
-  border-top: 1px solid #f3f4f6;
-  margin: 5px 0;
-}
-
-/* Buttons */
-.profile-dropdown button {
+.header-dropdown-menu button {
   width: 100%;
-  padding: 10px;
+  padding: 12px 10px;
+  text-align: left;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
+  background: none;
   font-size: 14px;
+  color: #334155;
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   transition: 0.2s;
+    box-sizing: border-box;
+
 }
 
-.profile-dropdown button.profile-btn {
-  background: #ecfdf5; 
+.header-dropdown-menu button:hover {
+  background: #f8fafc;
   color: #10b981;
 }
 
-.profile-dropdown button.profile-btn:hover {
-  background: #10b981;
-  color: white;
+.logout-btn-text {
+  color: #ef4444 !important;
+  background: #fff5f5 !important;
 }
 
-.profile-dropdown button.logout-btn {
-  background: #fee2e2;
-  color: #ef4444;
-}
+/* ================= RESPONSIVE ================= */
 
-.profile-dropdown button.logout-btn:hover {
-  background: #ef4444;
-  color: white;
-}
-
-/* ================================================================
-   ALL-SCREEN RESPONSIVE MEDIA QUERIES
-================================================================ */
-
-@media (max-width: 768px) {
-  .admin-header {
-    padding: 0 15px;
-    height: 60px;
+@media (max-width: 1024px) {
+  .mobile-nav-toggle {
+    display: block;
   }
 
-  .welcome-text {
-    display: none; /* Hide 'Welcome, Admin' to save space on tablets */
-  }
-
-  .header-page-title {
-    font-size: 16px;
+  .greet {
+    display: none;
   }
 }
 
-@media (max-width: 480px) {
-  .admin-header {
-    border-radius: 0; /* Flat look on small phones */
+@media (max-width: 600px) {
+  .name {
+    display: none;
   }
 
-  .header-page-title {
+  .page-main-title {
+    font-size: 0.9rem;
     max-width: 150px;
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  .profile-dropdown {
-    width: 180px;
-    right: -5px; /* Slight offset to keep it within screen bounds */
-    top: 50px;
+  .header-dropdown-menu {
+    right: 10px;
+    width: 200px;
   }
 }

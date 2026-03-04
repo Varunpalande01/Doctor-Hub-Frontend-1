@@ -57,6 +57,21 @@ const MedicalRecords = () => {
     setTimeout(() => setNotification(null), 3000);
   };
 
+  // Fixed: handleDownload is now connected to the button
+  const handleDownload = (report) => {
+    triggerNotify(`Downloading ${report.name}...`);
+    // Simulating file download
+    setTimeout(() => {
+      const link = document.createElement('a');
+      link.href = '#'; // Yahan actual PDF URL aayega
+      link.setAttribute('download', `medical_report_${report.id}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      triggerNotify("Download Complete!");
+    }, 1500);
+  };
+
   // Mock OCR Upload
   const handleFileUpload = () => {
     triggerNotify("AI is scanning document for data...");
@@ -232,7 +247,8 @@ const MedicalRecords = () => {
                   <div className="action-group">
                     <button className="circle-btn" onClick={() => setShowPreview(report)} title="Preview"><i className="fas fa-eye"></i></button>
                     <button className="circle-btn" onClick={() => setShowShareModal(report)} title="Share"><i className="fas fa-share-nodes"></i></button>
-                    <button className="download-action">Download</button>
+                    {/* DOWNLOAD BUTTON FIXED HERE */}
+                    <button className="download-action" onClick={() => handleDownload(report)}>Download</button>
                   </div>
                 </div>
               </div>
@@ -294,23 +310,42 @@ const MedicalRecords = () => {
         </div>
       )}
 
-      {/* 3. Share Modal */}
+      {/* 3. Secure Share Modal Styled */}
       {showShareModal && (
         <div className="modal-overlay" onClick={() => setShowShareModal(null)}>
-          <div className="modal-container share-modal" onClick={e => e.stopPropagation()}>
+          <div className="modal-container share-modal-styled" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>Secure Share</h3>
+              <h3><i className="fas fa-shield-halved"></i> Secure Share</h3>
               <button className="close-x" onClick={() => setShowShareModal(null)}>&times;</button>
             </div>
             <div className="modal-body">
-              <p>Generate a temporary secure link for this report.</p>
+              <p className="share-desc">Generate a temporary encrypted link to share with your doctor. Expires in 24h.</p>
+              
               <div className="share-link-box">
-                <code>health.io/share/x92j{showShareModal.id}</code>
-                <button onClick={() => {triggerNotify("Link copied to clipboard!"); setShowShareModal(null);}}>Copy</button>
+                <code>health.io/x92j{showShareModal.id}</code>
+                <button className="copy-btn" onClick={() => {
+                  navigator.clipboard.writeText(`health.io/x92j${showShareModal.id}`);
+                  triggerNotify("Link copied to clipboard!"); 
+                  setShowShareModal(null);
+                }}>
+                  <i className="fas fa-copy"></i> Copy
+                </button>
               </div>
-              <div className="share-options">
-                <button className="share-opt wa"><i className="fab fa-whatsapp"></i> WhatsApp</button>
-                <button className="share-opt em"><i className="fas fa-envelope"></i> Email</button>
+
+              <div className="share-options-grid">
+                <button className="share-opt wa">
+                  <i className="fab fa-whatsapp"></i>
+                  <span>WhatsApp</span>
+                </button>
+                <button className="share-opt em">
+                  <i className="fas fa-envelope"></i>
+                  <span>Email</span>
+                </button>
+              </div>
+              
+              <div className="security-notice">
+                <i className="fas fa-info-circle"></i>
+                <span>Your data is end-to-end encrypted.</span>
               </div>
             </div>
           </div>

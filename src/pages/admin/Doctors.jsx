@@ -1,137 +1,245 @@
 import React, { useState } from "react";
 import "./Doctors.css";
-
+import { Eye } from "lucide-react";
 const initialDoctors = [
-  { id: 1, name: "Dr. John Doe", specialty: "Cardiology", email: "john@example.com", phone: "123-456-7890", gender: "Male", status: "pending", image: "https://via.placeholder.com/150" },
-  { id: 2, name: "Dr. Jane Smith", specialty: "Neurology", email: "jane@example.com", phone: "987-654-3210", gender: "Female", status: "verified", image: "https://via.placeholder.com/150" },
-  { id: 3, name: "Dr. Alex Brown", specialty: "Dermatology", email: "alex@example.com", phone: "555-123-4567", gender: "Male", status: "rejected", image: "https://via.placeholder.com/150" },
+  {
+    id: 1,
+    name: "Dr. Amit Sharma",
+    gender: "Male",
+    email: "amit.sharma@gmail.com",
+    phone: "9876543210",
+    specialty: "Cardiology",
+    experience: 12,
+    qualification: "MBBS, MD (Cardiology)",
+    registrationNumber: "MCI-458796",
+    consultationFee: "₹800",
+    clinic: {
+      name: "Heart Care Clinic",
+      city: "Mumbai",
+      area: "Andheri West",
+      address: "SV Road, Andheri West, Mumbai"
+    },
+    documents: {
+      degree: "Degree Certificate",
+      registration: "Medical Registration Proof",
+      id: "Government ID"
+    },
+    status: "pending",
+    image: "https://i.pravatar.cc/150?img=12"
+  },
+  {
+    id: 2,
+    name: "Dr. Neha Verma",
+    gender: "Female",
+    email: "neha.verma@gmail.com",
+    phone: "9988776655",
+    specialty: "Dermatology",
+    experience: 7,
+    qualification: "MBBS, MD (Dermatology)",
+    registrationNumber: "MCI-784512",
+    consultationFee: "₹600",
+    clinic: {
+      name: "SkinCare Plus",
+      city: "Pune",
+      area: "Baner",
+      address: "Baner Road, Pune"
+    },
+    documents: {
+      degree: "Degree Certificate",
+      registration: "Medical Registration Proof",
+      id: "Government ID"
+    },
+    status: "verified",
+    image: "https://i.pravatar.cc/150?img=32"
+  }
 ];
 
 const Doctors = () => {
   const [doctors, setDoctors] = useState(initialDoctors);
   const [search, setSearch] = useState("");
-  const [genderFilter, setGenderFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-  const [modalData, setModalData] = useState(null);
-  const [isEdit, setIsEdit] = useState(false);
+  const [cityFilter, setCityFilter] = useState("");
+  const [specialtyFilter, setSpecialtyFilter] = useState("");
+  const [experienceFilter, setExperienceFilter] = useState("");
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [rejectReason, setRejectReason] = useState("");
 
   const filteredDoctors = doctors.filter((doc) => {
-    const matchesSearch = doc.name.toLowerCase().includes(search.toLowerCase());
-    const matchesGender = genderFilter ? doc.gender === genderFilter : true;
-    const matchesStatus = statusFilter ? doc.status === statusFilter : true;
-    return matchesSearch && matchesGender && matchesStatus;
+    const searchMatch =
+      doc.name.toLowerCase().includes(search.toLowerCase()) ||
+      doc.specialty.toLowerCase().includes(search.toLowerCase());
+    const statusMatch = statusFilter ? doc.status === statusFilter : true;
+    const cityMatch = cityFilter ? doc.clinic.city === cityFilter : true;
+    const specialtyMatch = specialtyFilter ? doc.specialty === specialtyFilter : true;
+    const experienceMatch = experienceFilter
+      ? doc.experience >= Number(experienceFilter)
+      : true;
+    return searchMatch && statusMatch && cityMatch && specialtyMatch && experienceMatch;
   });
 
-  const handleDelete = (id) => {
-    setDoctors(doctors.filter((doc) => doc.id !== id));
+  const updateStatus = (id, newStatus) => {
+    setDoctors((prev) =>
+      prev.map((doc) => (doc.id === id ? { ...doc, status: newStatus } : doc))
+    );
+    setSelectedDoctor(null);
+    setRejectReason("");
   };
 
-  const handleSave = () => {
-    setDoctors(doctors.map((doc) => (doc.id === modalData.id ? modalData : doc)));
-    setModalData(null);
-    setIsEdit(false);
+  const handleClose = () => {
+    setSelectedDoctor(null);
+    setRejectReason("");
   };
 
   return (
-    <div className="doctors-page">
-      <h2 className="page-header">Doctors Management</h2>
+    <div className="admin-doctors-page">
+      <h1 className="page-title">Doctor Verification & Management</h1>
 
-      {/* --- Dashboard-style search --- */}
-      <div className="search-outer-container">
-        <div className="search-inner-box">
-          <input
-            type="text"
-            placeholder="Search doctors by name..."
-            className="dashboard-search-input"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-      </div>
-
-      {/* --- Filters --- */}
-      <div className="doctors-filters-row">
-        <select value={genderFilter} onChange={(e) => setGenderFilter(e.target.value)}>
-          <option value="">All Genders</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
+      <div className="top-controls">
+        <input
+          type="text"
+          placeholder="Search name or specialty..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
           <option value="">All Status</option>
           <option value="pending">Pending</option>
           <option value="verified">Verified</option>
           <option value="rejected">Rejected</option>
         </select>
+        <select value={cityFilter} onChange={(e) => setCityFilter(e.target.value)}>
+          <option value="">All Cities</option>
+          <option value="Mumbai">Mumbai</option>
+          <option value="Pune">Pune</option>
+        </select>
+        <select value={specialtyFilter} onChange={(e) => setSpecialtyFilter(e.target.value)}>
+          <option value="">All Specialties</option>
+          <option value="Cardiology">Cardiology</option>
+          <option value="Dermatology">Dermatology</option>
+        </select>
+        <select value={experienceFilter} onChange={(e) => setExperienceFilter(e.target.value)}>
+          <option value="">Any Experience</option>
+          <option value="5">5+ Years</option>
+          <option value="10">10+ Years</option>
+        </select>
       </div>
 
-      {/* --- Table --- */}
-      <table className="doctors-table">
-        <thead>
-          <tr>
-            <th>Doctor</th>
-            <th>Email</th>
-            <th>Specialty</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredDoctors.map((doc) => (
-            <tr key={doc.id} className="doctor-row">
-              <td>
-                <div className="doctor-info-cell">
-                  <img src={doc.image} alt="" className="doctor-avatar" />
-                  <span>{doc.name}</span>
-                </div>
-              </td>
-              <td>{doc.email}</td>
-              <td>{doc.specialty}</td>
-              <td>
-                <span className={`status-text status-${doc.status}`}>{doc.status}</span>
-              </td>
-              <td className="action-buttons">
-                <button className="view-btn" onClick={() => { setModalData(doc); setIsEdit(false); }}>View</button>
-                <button className="edit-btn" onClick={() => { setModalData(doc); setIsEdit(true); }}>Edit</button>
-                <button className="delete-btn" onClick={() => { setModalData(doc); setIsEdit(false); }}>Delete</button>
-              </td>
+      <div className="table-wrapper">
+        <table className="responsive-table">
+          <thead>
+            <tr>
+              <th>Doctor</th>
+              <th>Specialty</th>
+              <th>Experience</th>
+              <th>City</th>
+              <th>Status</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredDoctors.length === 0 ? (
+              <tr>
+                <td colSpan="6" style={{ textAlign: "center", padding: "40px" }}>No doctors found</td>
+              </tr>
+            ) : (
+              filteredDoctors.map((doc) => (
+                <tr key={doc.id}>
+                  <td className="doctor-cell" data-label="Doctor">
+                    <img src={doc.image} alt="doctor" />
+                    <div>
+                      <strong>{doc.name}</strong>
+                      <div className="sub-text">{doc.qualification}</div>
+                    </div>
+                  </td>
+                  <td data-label="Specialty">{doc.specialty}</td>
+                  <td data-label="Experience">{doc.experience} yrs</td>
+                  <td data-label="City">{doc.clinic.city}</td>
+                  <td data-label="Status">
+                    <span className={`status ${doc.status}`}>{doc.status}</span>
+                  </td>
+                  <td data-label="Action">
+                    <button className="view-btn" onClick={() => setSelectedDoctor(doc)}><Eye size={18} /></button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
-      {/* --- Modal --- */}
-      {modalData && (
-        <div className="modal-overlay" onClick={() => setModalData(null)}>
-          <div className="modal-container" onClick={(e) => e.stopPropagation()}>
-            <h3>{isEdit ? "Edit Doctor" : "Doctor Details"}</h3>
-            <div className="modal-body">
-              <img src={modalData.image} alt="" className="modal-avatar" />
-              <label>Name</label>
-              <input type="text" value={modalData.name} disabled={!isEdit} onChange={(e) => setModalData({ ...modalData, name: e.target.value })} />
-
-              <label>Specialty</label>
-              <input type="text" value={modalData.specialty} disabled={!isEdit} onChange={(e) => setModalData({ ...modalData, specialty: e.target.value })} />
-
-              <label>Email</label>
-              <input type="text" value={modalData.email} disabled={!isEdit} onChange={(e) => setModalData({ ...modalData, email: e.target.value })} />
-
-              <label>Phone</label>
-              <input type="text" value={modalData.phone} disabled={!isEdit} onChange={(e) => setModalData({ ...modalData, phone: e.target.value })} />
-
-              <label>Gender</label>
-              <input type="text" value={modalData.gender} disabled={!isEdit} />
-
-              <label>Status</label>
-              <select value={modalData.status} disabled={!isEdit} onChange={(e) => setModalData({ ...modalData, status: e.target.value })}>
-                <option value="pending">Pending</option>
-                <option value="verified">Verified</option>
-                <option value="rejected">Rejected</option>
-              </select>
+      {selectedDoctor && (
+        <div className="modal-overlay">
+          <div className="modal">
+            {/* X is now strictly inside the modal div at the top */}
+            <button className="modal-top-close" onClick={handleClose}>✕</button>
+            
+            <div className="modal-header">
+              <img src={selectedDoctor.image} alt="doctor" />
+              <div>
+                <h2>{selectedDoctor.name}</h2>
+                <p style={{ color: "#64748b" }}>{selectedDoctor.specialty}</p>
+              </div>
             </div>
-            <div className="modal-actions">
-              <button className="cancel-btn" onClick={() => setModalData(null)}>Close</button>
-              {isEdit && <button className="action-btn" onClick={handleSave}>Save Changes</button>}
-              {!isEdit && <button className="action-btn" onClick={() => handleDelete(modalData.id)}>Delete</button>}
+
+            <div className="modal-scroll-area">
+              <section>
+                <h3>Basic Information</h3>
+                <p><b>Email:</b> {selectedDoctor.email}</p>
+                <p><b>Phone:</b> {selectedDoctor.phone}</p>
+                <p><b>Gender:</b> {selectedDoctor.gender}</p>
+              </section>
+
+              <section>
+                <h3>Professional Details</h3>
+                <p><b>Experience:</b> {selectedDoctor.experience} Years</p>
+                <p><b>Qualification:</b> {selectedDoctor.qualification}</p>
+                <p><b>Registration No:</b> {selectedDoctor.registrationNumber}</p>
+                <p><b>Fee:</b> {selectedDoctor.consultationFee}</p>
+              </section>
+
+              <section>
+                <h3>Clinic Details</h3>
+                <p><b>Name:</b> {selectedDoctor.clinic.name}</p>
+                <p><b>Location:</b> {selectedDoctor.clinic.area}, {selectedDoctor.clinic.city}</p>
+                <p><b>Address:</b> {selectedDoctor.clinic.address}</p>
+              </section>
+
+              <section>
+                <h3>Documents</h3>
+                <ul className="docs">
+                  <li>
+                    <span>{selectedDoctor.documents.degree}</span>
+                    <button className="doc-view"><Eye size={18} /></button>
+                  </li>
+                  <li>
+                    <span>{selectedDoctor.documents.registration}</span>
+                    <button className="doc-view"><Eye size={18} /></button>
+                  </li>
+                  <li>
+                    <span>{selectedDoctor.documents.id}</span>
+                    <button className="doc-view"><Eye size={18} /></button>
+                  </li>
+                </ul>
+              </section>
+
+              {/* Actions at the bottom of data */}
+              <div className="modal-actions">
+                {selectedDoctor.status === "pending" && (
+                  <>
+                    <textarea
+                      className="rejection-reason"
+                      placeholder="Enter reason for rejection..."
+                      value={rejectReason}
+                      onChange={(e) => setRejectReason(e.target.value)}
+                    />
+                    <div className="action-buttons-row">
+                      <button className="verify" onClick={() => updateStatus(selectedDoctor.id, "verified")}>Verify</button>
+                      <button className="reject" onClick={() => updateStatus(selectedDoctor.id, "rejected")}>Reject</button>
+                    </div>
+                  </>
+                )}
+                <button className="close-btn-bottom" onClick={handleClose}>Close Window</button>
+              </div>
             </div>
           </div>
         </div>

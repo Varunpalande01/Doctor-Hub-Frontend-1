@@ -1,238 +1,237 @@
-// import React, { useState } from "react";
-// import { adminDashboardData } from "../../utils/adminDashboardDummyData";
-// import "./AdminDashboard.css";
-
-// const AdminDashboard = () => {
-//   const { stats, pendingDoctors, systemLogs } = adminDashboardData;
-//   const [searchValue, setSearchValue] = useState("");
-
-//   const getStatusClass = (status) => {
-//     switch (status.toLowerCase()) {
-//       case "pending":
-//         return "status-pending";
-//       case "verified":
-//         return "status-verified";
-//       case "rejected":
-//         return "status-rejected";
-//       default:
-//         return "";
-//     }
-//   };
-
-//   // Filter doctors based on search input
-//   const filteredDoctors = pendingDoctors.filter((doc) =>
-//     (doc.name || "").toLowerCase().includes(searchValue.toLowerCase())
-//   );
-
-//   return (
-//     <div className="admin-dashboard">
-//       {/* --- Search Bar --- */}
-//       <div className="dashboard-search">
-//         <input
-//           type="text"
-//           placeholder="Search doctors..."
-//           value={searchValue}
-//           onChange={(e) => setSearchValue(e.target.value)}
-//         />
-//       </div>
-
-//       {/* --- Stats Cards --- */}
-//       <div className="stats-cards">
-//         <div className="stat-card">
-//           <div className="stat-icon">🧑‍⚕️</div>
-//           <div>
-//             <h3>Total Doctors</h3>
-//             <p>{stats.totalDoctors}</p>
-//             <small className="stat-change">+3% this month</small>
-//           </div>
-//         </div>
-//         <div className="stat-card">
-//           <div className="stat-icon">👨‍👩‍👦</div>
-//           <div>
-//             <h3>Total Patients</h3>
-//             <p>{stats.totalPatients}</p>
-//             <small className="stat-change">+5% this month</small>
-//           </div>
-//         </div>
-//         <div className="stat-card">
-//           <div className="stat-icon">📅</div>
-//           <div>
-//             <h3>Total Appointments</h3>
-//             <p>{stats.totalAppointments}</p>
-//             <small className="stat-change">+2% this month</small>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* --- Pending Doctors Section --- */}
-//       <div className="pending-section">
-//         <h2>Doctors Awaiting Verification</h2>
-//         {filteredDoctors.length === 0 ? (
-//           <p>No pending verifications</p>
-//         ) : (
-//           <table>
-//             <thead>
-//               <tr>
-//                 <th>Doctor Name</th>
-//                 <th>Specialty</th>
-//                 <th>Status</th>
-//                 <th>Action</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {filteredDoctors.map((doc) => (
-//                 <tr key={doc.id}>
-//                   <td>{doc.name}</td>
-//                   <td>{doc.specialty}</td>
-//                   <td className={getStatusClass(doc.status)}>{doc.status}</td>
-//                   <td className="action-buttons">
-//                     <button className="verify-btn">Verify</button>
-//                     <button className="reject-btn">Reject</button>
-//                   </td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         )}
-//       </div>
-
-//       {/* --- System Logs --- */}
-//       <div className="logs-section">
-//         <h2>System Logs</h2>
-//         <ul className="logs-list">
-//           {systemLogs.map((log) => (
-//             <li key={log.id} className={`log-item ${log.type}`}>
-//               <div className="log-content">
-//                 <span className="log-action">{log.action}</span>
-//                 <span className="log-user"> by {log.user}</span>
-//               </div>
-//               <div className="log-time">{log.time}</div>
-//             </li>
-//           ))}
-//         </ul>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AdminDashboard;
-
-
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { adminDashboardData } from "../../utils/adminDashboardDummyData";
 import "./AdminDashboard.css";
-
+import { Eye } from "lucide-react";
 const AdminDashboard = () => {
-  const { stats, pendingDoctors, systemLogs } = adminDashboardData;
-  const [searchValue, setSearchValue] = useState("");
+  const navigate = useNavigate();
 
-  const getStatusClass = (status) => {
-    switch (status.toLowerCase()) {
-      case "pending": return "status-pending";
-      case "verified": return "status-verified";
-      case "rejected": return "status-rejected";
-      default: return "";
-    }
+  const {
+    stats = {},
+    pendingDoctors = [],
+    systemLogs = [],
+    recentFeedback = []
+  } = adminDashboardData;
+
+  const [searchValue, setSearchValue] = useState("");
+  const [recentSearches, setRecentSearches] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const keyword = searchValue.toLowerCase().trim();
+
+  /* =========================
+     TEXT HIGHLIGHT
+     ========================= */
+  const highlightText = (text) => {
+    if (!keyword || !text) return text;
+    const parts = text.split(new RegExp(`(${keyword})`, "gi"));
+    return parts.map((part, index) =>
+      part.toLowerCase() === keyword ? (
+        <mark key={index} className="search-highlight">
+          {part}
+        </mark>
+      ) : (
+        part
+      )
+    );
   };
 
-  const filteredDoctors = pendingDoctors.filter((doc) =>
-    (doc.name || "").toLowerCase().includes(searchValue.toLowerCase())
-  );
+  /* =========================
+     GLOBAL FILTERING
+     ========================= */
+  const filteredDoctors = useMemo(() => {
+    if (!keyword) return pendingDoctors;
+    return pendingDoctors.filter((doc) =>
+      [doc.name, doc.specialty, doc.hospital, doc.city]
+        .join(" ")
+        .toLowerCase()
+        .includes(keyword)
+    );
+  }, [keyword, pendingDoctors]);
+
+  const filteredFeedback = useMemo(() => {
+    if (!keyword) return recentFeedback;
+    return recentFeedback.filter((fb) =>
+      [fb.user, fb.message, fb.status]
+        .join(" ")
+        .toLowerCase()
+        .includes(keyword)
+    );
+  }, [keyword, recentFeedback]);
+
+  const filteredLogs = useMemo(() => {
+    if (!keyword) return systemLogs;
+    return systemLogs.filter((log) =>
+      [log.message, log.actor, log.type]
+        .join(" ")
+        .toLowerCase()
+        .includes(keyword)
+    );
+  }, [keyword, systemLogs]);
+
+  /* =========================
+     SEARCH SUGGESTIONS
+     ========================= */
+  const suggestions = useMemo(() => {
+    if (!keyword) return [];
+
+    const doctorSuggestions = pendingDoctors
+      .filter((d) => d.name.toLowerCase().includes(keyword))
+      .map((d) => ({ label: d.name, type: "Doctor" }));
+
+    const feedbackSuggestions = recentFeedback
+      .filter((f) => f.message.toLowerCase().includes(keyword))
+      .map((f) => ({ label: f.message, type: "Feedback" }));
+
+    const logSuggestions = systemLogs
+      .filter((l) => l.message.toLowerCase().includes(keyword))
+      .map((l) => ({ label: l.message, type: "Log" }));
+
+    return [...doctorSuggestions, ...feedbackSuggestions, ...logSuggestions].slice(
+      0,
+      6
+    );
+  }, [keyword, pendingDoctors, recentFeedback, systemLogs]);
+
+  const handleSearchSelect = (value) => {
+    setSearchValue(value);
+    setShowSuggestions(false);
+    setRecentSearches((prev) => {
+      const updated = [value, ...prev.filter((v) => v !== value)];
+      return updated.slice(0, 5);
+    });
+  };
 
   return (
-    <div className="admin-dashboard-wrapper">
-      {/* Search Section */}
-      <div className="dashboard-search-container">
+    <div className="admin-dashboard">
+
+      {/* 🔍 GLOBAL SEARCH */}
+      <div className="dashboard-search">
         <input
           type="text"
-          placeholder="Search doctors by name..."
+          placeholder="Search doctors, feedback, logs..."
           value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
+          onChange={(e) => {
+            setSearchValue(e.target.value);
+            setShowSuggestions(true);
+          }}
+          onFocus={() => setShowSuggestions(true)}
+          onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
         />
-      </div>
 
-      {/* Stats Section */}
-      <div className="admin-stats-grid">
-        <div className="admin-stat-card">
-          <div className="stat-icon-frame">🧑‍⚕️</div>
-          <div className="stat-info">
-            <h3>Total Doctors</h3>
-            <p>{stats.totalDoctors}</p>
-            <small className="trend-up">+3% this month</small>
-          </div>
-        </div>
-        <div className="admin-stat-card">
-          <div className="stat-icon-frame">👨‍👩‍👦</div>
-          <div className="stat-info">
-            <h3>Total Patients</h3>
-            <p>{stats.totalPatients}</p>
-            <small className="trend-up">+5% this month</small>
-          </div>
-        </div>
-        <div className="admin-stat-card">
-          <div className="stat-icon-frame">📅</div>
-          <div className="stat-info">
-            <h3>Appointments</h3>
-            <p>{stats.totalAppointments}</p>
-            <small className="trend-up">+2% this month</small>
-          </div>
-        </div>
-      </div>
+        {showSuggestions && (suggestions.length > 0 || recentSearches.length > 0) && (
+          <div className="search-suggestions">
 
-      {/* Table Section */}
-      <div className="admin-section-card">
-        <h2 className="section-header">Doctors Awaiting Verification</h2>
-        <div className="admin-table-responsive">
-          <table className="admin-data-table">
-            <thead>
-              <tr>
-                <th>Doctor Name</th>
-                <th>Specialty</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredDoctors.length === 0 ? (
-                <tr><td colSpan="4" style={{textAlign: 'center'}}>No pending verifications</td></tr>
-              ) : (
-                filteredDoctors.map((doc) => (
-                  <tr key={doc.id}>
-                    <td className="font-bold">{doc.name}</td>
-                    <td>{doc.specialty}</td>
-                    <td><span className={`status-text ${getStatusClass(doc.status)}`}>{doc.status}</span></td>
-                    <td>
-                      <div className="admin-action-group">
-                        <button className="btn-verify">Verify</button>
-                        <button className="btn-reject">Reject</button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+            {keyword === "" && recentSearches.length > 0 && (
+              <>
+                <p className="suggestion-title">Recent Searches</p>
+                {recentSearches.map((item, i) => (
+                  <div
+                    key={i}
+                    className="suggestion-item"
+                    onClick={() => handleSearchSelect(item)}
+                  >
+                    {item}
+                  </div>
+                ))}
+              </>
+            )}
 
-      {/* Logs Section */}
-      <div className="admin-section-card">
-        <h2 className="section-header">System Logs</h2>
-        <div className="logs-scroll-box">
-          <ul className="admin-logs-list">
-            {systemLogs.map((log) => (
-              <li key={log.id} className={`admin-log-item ${log.type}`}>
-                <div className="log-main">
-                  <span className="log-msg"><strong>{log.action}</strong> by {log.user}</span>
-                  <span className="log-ts">{log.time}</span>
+            {keyword !== "" &&
+              suggestions.map((s, i) => (
+                <div
+                  key={i}
+                  className="suggestion-item"
+                  onClick={() => handleSearchSelect(s.label)}
+                >
+                  <span className="suggestion-type">{s.type}</span>
+                  {highlightText(s.label)}
                 </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+              ))}
+          </div>
+        )}
       </div>
+
+      {/* 📊 STATS */}
+      <div className="stats-grid">
+        <StatCard title="Total Doctors" value={stats.totalDoctors} onClick={() => navigate("/admin/doctors")} />
+        <StatCard title="Active Doctors" value={stats.activeDoctors} onClick={() => navigate("/admin/doctors?status=active")} />
+        <StatCard title="Pending Verifications" value={stats.pendingDoctors} onClick={() => navigate("/admin/verify-doctors")} />
+        <StatCard title="Patients" value={stats.totalPatients} onClick={() => navigate("/admin/users?role=patient")} />
+        <StatCard title="Appointments" value={stats.totalAppointments} onClick={() => navigate("/admin/appointments")} />
+        <StatCard title="Unread Feedback" value={stats.unreadFeedback} alert onClick={() => navigate("/admin/feedback?status=unread")} />
+      </div>
+
+      {/* 🧑‍⚕️ DOCTORS */}
+      <Section title="Doctors Awaiting Verification">
+        {filteredDoctors.length === 0 ? (
+          <p className="empty">No results found</p>
+        ) : (
+          filteredDoctors.map((doc) => (
+            <div key={doc.id} className="doctor-row hoverable">
+              <div>
+                <p className="doctor-name">{highlightText(doc.name)}</p>
+                <p className="doctor-meta">
+                  {highlightText(`${doc.specialty} • ${doc.hospital} • ${doc.city}`)}
+                </p>
+              </div>
+              <button
+                className="view-btn"
+onClick={() => navigate(`/admin/doctors?highlight=${doc.id}`)}              >
+               <Eye size={18} />
+              </button>
+            </div>
+          ))
+        )}
+      </Section>
+
+      {/* 💬 FEEDBACK */}
+      <Section title="Recent Feedback">
+        {filteredFeedback.map((fb) => (
+          <div
+            key={fb.id}
+            className="feedback-item hoverable"
+            onClick={() => navigate(`/admin/feedback/${fb.id}`)}
+          >
+            <p>{highlightText(fb.message)}</p>
+            <span className="fb-meta">
+              {highlightText(fb.user)} • {fb.createdAt}
+            </span>
+          </div>
+        ))}
+      </Section>
+
+      {/* 🧾 LOGS */}
+      <Section title="System Logs">
+        {filteredLogs.map((log) => (
+          <div
+            key={log.id}
+            className="log hoverable"
+            onClick={() => navigate("/admin/system-logs")}
+          >
+            {highlightText(log.message)}
+          </div>
+        ))}
+      </Section>
+
     </div>
   );
 };
+
+/* ================= COMPONENTS ================= */
+
+const StatCard = ({ title, value, alert, onClick }) => (
+  <div className={`stat-card clickable ${alert ? "alert" : ""}`} onClick={onClick}>
+    <p className="stat-title">{title}</p>
+    <h3 className="stat-value">{value}</h3>
+  </div>
+);
+
+const Section = ({ title, children }) => (
+  <div className="section">
+    <h2>{title}</h2>
+    {children}
+  </div>
+);
 
 export default AdminDashboard;

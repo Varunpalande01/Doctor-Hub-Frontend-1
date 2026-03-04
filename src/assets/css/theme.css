@@ -6,8 +6,8 @@
   --card-bg: #ffffff;             /* cards and panels */
   --primary-accent: #10b981;      /* buttons, highlights, active links */
   --secondary-accent: #f0fdf4;    /* notifications, subtle highlights */
-  --text-heading: #111827;        /* headings */
-  --text-body: #374151;           /* normal text */
+  --text-heading: #000000;        /* headings */
+  --text-body:#000000;          /* normal text */
   --text-muted: #6b7280;          /* secondary text */
   --border-light: #e5e7eb;        /* card/table borders */
   --shadow-soft: 0 4px 12px rgba(0,0,0,0.05); /* soft shadows */

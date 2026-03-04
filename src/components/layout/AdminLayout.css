@@ -1,10 +1,10 @@
-/* src/layouts/AdminLayout.css */
-
 :root {
   --admin-bg-main: #f4f6fa;
   --admin-bg-content: #f9fafb;
   --admin-footer-bg: #f0f4f8;
-  --admin-primary-blue: #2563eb;
+  --admin-primary-green: #10b981;
+  --sidebar-width-expanded: 280px;
+--sidebar-width-collapsed: 88px; /* Fixed width matched with sidebar */  --transition-speed: 0.4s;
 }
 
 .admin-layout {
@@ -12,77 +12,58 @@
   min-height: 100vh;
   font-family: "Inter", sans-serif;
   background: var(--admin-bg-main);
-  overflow-x: hidden; /* Prevent horizontal "sliding" */
+  width: 100%;
+  overflow-x: hidden;
 }
 
-/* --- MAIN WRAPPER (Header + Content + Footer) --- */
 .admin-main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-width: 0; /* Fixes flexbox child overflow issues */
+  min-width: 0; /* Prevents layout breaking */
+  transition: margin-left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* --- SCROLLABLE BODY --- */
-.admin-body {
-  flex: 1;
-  padding: 0; 
-  background-color: var(--admin-bg-content);
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto; /* Content and footer scroll together */
-  scroll-behavior: smooth;
+/* Desktop Par Sidebar jitni jagah chhodna */
+@media (min-width: 1025px) {
+  .sidebar-is-expanded .admin-main {
+    margin-left: var(--sidebar-width-expanded);
+  }
+  .sidebar-is-collapsed .admin-main {
+    margin-left: var(--sidebar-width-collapsed);
+  }
 }
 
 .admin-content {
-  flex: 1; /* Pushes footer to the bottom if content is short */
-  padding: clamp(15px, 3vw, 25px);
+  flex: 1;
+  padding: clamp(15px, 3vw, 30px);
+  min-height: calc(100vh - 65px - 60px); /* Header aur Footer minus */
+  background: var(--admin-bg-content);
+  overflow-y: auto;   /* 🔥 scroll yahin aayega */
+  height: calc(100vh - 65px); /* header minus */
 }
 
-/* --- FOOTER --- */
 .admin-footer {
   background: var(--admin-footer-bg);
-  color: #374151;
+  color: #475569;
   padding: 20px;
   text-align: center;
   font-size: 14px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #e2e8f0;
 }
 
 .admin-footer a {
-  color: var(--admin-primary-blue);
+  color: var(--admin-primary-green);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-.admin-footer a:hover {
-  text-decoration: underline;
-}
-
-/* ================================================================
-   ALL-SCREEN RESPONSIVE MEDIA QUERIES
-================================================================ */
-
-@media (max-width: 768px) {
-  /* Adjusting content padding for smaller screens */
+/* Mobile responsive padding */
+@media (max-width: 1024px) {
+  .admin-main {
+    margin-left: 0 !important;
+  }
   .admin-content {
-    padding: 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  /* On small phones, we must add padding to the bottom of the layout 
-     so the Content/Footer isn't hidden by the fixed Bottom Sidebar */
-  .admin-body {
-    padding-bottom: 70px; /* Exact height of our mobile bottom nav */
-  }
-
-  .admin-layout {
-    flex-direction: column; /* Sidebar will be fixed bottom, main on top */
-  }
-
-  .admin-footer {
-    font-size: 12px;
     padding: 15px;
   }
 }

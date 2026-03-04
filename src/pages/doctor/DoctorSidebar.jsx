@@ -45,7 +45,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { 
   FiGrid, FiCalendar, FiUsers, FiClock, FiBell, 
-  FiUserPlus, FiLogOut 
+  FiUserPlus, FiLogOut, FiActivity 
 } from "react-icons/fi"; // Icons import kar liye
 import "./DoctorSidebar.css";
 import Logo from "../../assets/images/logo.png"
@@ -94,6 +94,7 @@ const DoctorSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileO
     { name: "Patients", path: "/doctor/patients", icon: <FiUsers /> },
     { name: "Add Patient", path: "/doctor/add-patient", icon: <FiUserPlus /> }, // Naya Tab
     { name: "Availability", path: "/doctor/availability", icon: <FiClock /> },
+    { name: "Labs", path: "/doctor/Labs", icon: <FiActivity /> },
     { name: "Notifications", path: "/doctor/notifications", icon: <FiBell /> },
     
   ];
@@ -161,6 +162,14 @@ const DoctorSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileO
         <div className="sidebar-footer">
           {showFooterMenu && (!isCollapsed || isMobileOpen) && (
             <div className="sidebar-footer-dropdown">
+               <button
+                onClick={() => {
+                  navigate("/");
+                  setShowFooterMenu(false);
+                }}
+              >
+                🏠 Home
+              </button>
               <button onClick={() => { navigate("/doctor/profile"); setShowFooterMenu(false); setIsMobileOpen(false); }}>
                 👤 My Profile
               </button>

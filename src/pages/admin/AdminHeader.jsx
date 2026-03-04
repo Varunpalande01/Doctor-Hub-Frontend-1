@@ -1,122 +1,136 @@
-// import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import "./AdminHeader.css";
-
-// const AdminHeader = () => {
-//   const navigate = useNavigate();
-//   const user = JSON.parse(localStorage.getItem("currentUser"));
-//   const [open, setOpen] = useState(false);
-
-//   const handleLogout = () => {
-//     localStorage.removeItem("currentUser");
-//     navigate("/login");
-//   };
-
-//   const goToProfile = () => {
-//     navigate("/admin/profile");
-//     setOpen(false);
-//   };
-
-//   return (
-//     <header className="admin-header">
-//       <div className="admin-header-right">
-//         <div className="profile-wrapper">
-//           <span className="welcome-text">
-//             👋 Welcome, {user?.fullName || "Admin"}
-//           </span>
-//           <img
-//             src={user?.profileImg || "https://i.pravatar.cc/40"}
-//             alt="Admin"
-//             className="profile-img"
-//             onClick={() => setOpen(!open)}
-//           />
-
-//           {open && (
-//             <div className="profile-dropdown">
-//               <p>{user?.fullName || "Admin"}</p>
-//               <span>Admin</span>
-//               <button onClick={goToProfile} className="profile-btn">
-//                 Profile
-//               </button>
-//               <button onClick={handleLogout} className="logout-btn">
-//                 Logout
-//               </button>
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </header>
-//   );
-// };
-
-// export default AdminHeader;
-
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./AdminHeader.css";
 
-const AdminHeader = () => {
+const AdminHeader = ({ isCollapsed, setIsCollapsed }) => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const user = JSON.parse(localStorage.getItem("currentUser"));
-  const [open, setOpen] = useState(false);
 
-  // Mapping paths to Page Titles
-  const pageTitles = {
-    "/admin/dashboard": "Dashboard Overview",
-    "/admin/doctors": "Doctors Directory",
-    "/admin/verify-doctors": "Pending Verifications",
-    "/admin/users": "User Management",
-    "/admin/profile": "My Profile",
-    "/admin/settings": "System Settings",
-  };
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const currentTitle = pageTitles[location.pathname] || "Admin Panel";
+  // 🔴 IMPORTANT: Doctor header jaisa click-outside fix
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
-    navigate("/login");
+    setDropdownOpen(false);
+    navigate("/");
   };
+
+  const pageTitles = {
+  "/admin/dashboard": "Dashboard Overview",
+
+  "/admin/doctors": "Doctors Directory",
+
+  "/admin/verify-doctors": "Pending Verifications",
+
+  "/admin/users": "User Management",
+
+  "/admin/hospitals": "Hospital Management",
+
+  "/admin/labs": "Laboratory Management",
+
+  "/admin/appointments": "Appointments Overview",
+
+  "/admin/system-logs": "System Logs",
+
+  "/admin/feedback": "Patient Feedback",
+
+  "/admin/profile": "My Profile",
+
+  "/admin/settings": "System Settings",
+};
+
+  const currentTitle =
+    pageTitles[location.pathname] || "Admin Panel";
 
   return (
     <header className="admin-header">
-      {/* 1. Dynamic Title on the Left */}
-      <div className="admin-header-left">
-        <h1 className="header-page-title">{currentTitle}</h1>
+      {/* LEFT SECTION */}
+      <div className="header-left">
+        <button
+          className="mobile-nav-toggle"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
+          ☰
+        </button>
+
+        <h1 className="page-main-title">{currentTitle}</h1>
       </div>
 
-      {/* 2. Profile Section on the Right */}
-      <div className="admin-header-right">
-        <div className="profile-wrapper" onClick={() => setOpen(!open)}>
-          <span className="welcome-text">
-            👋 Welcome, {user?.fullName || "Admin"}
-          </span>
-          <img
-            src={user?.profileImg || "https://i.pravatar.cc/40"}
-            alt="Admin"
-            className="profile-img"
-          />
+      {/* RIGHT SECTION (dropdownRef yahin hona MUST hai) */}
+      <div className="header-right" ref={dropdownRef}>
+        <div
+          className="profile-trigger"
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+        >
+          <div className="admin-info-text">
+            <span className="greet">Hello,</span>
+            <span className="name">
+              {user?.fullName || "Admin User"}
+            </span>
+          </div>
 
-          {/* 3. Dropdown Menu */}
-          {open && (
-            <div className="profile-dropdown">
-              <div className="dropdown-info">
-                <p className="dropdown-name">{user?.fullName || "Admin"}</p>
-                <span className="dropdown-role">Administrator</span>
-              </div>
-              <hr className="dropdown-divider" />
-              <button 
-                onClick={() => { navigate("/admin/profile"); setOpen(false); }} 
-                className="profile-btn"
-              >
-                Profile
-              </button>
-              <button onClick={handleLogout} className="logout-btn">
-                Logout
-              </button>
-            </div>
-          )}
+          <div className="img-container">
+            <img
+              src={user?.profileImg || "https://i.pravatar.cc/40"}
+              alt="Profile"
+              className="admin-avatar"
+            />
+            <div className="online-indicator"></div>
+          </div>
         </div>
+
+        {/* 🔽 DROPDOWN */}
+        {dropdownOpen && (
+          <div className="header-dropdown-menu">
+            <div className="dropdown-user-info">
+              <span className="name">
+                {user?.fullName || "Admin User"}
+              </span>
+              <span className="role">SYSTEM ADMIN</span>
+            </div>
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate("/admin/profile");
+                setDropdownOpen(false);
+              }}
+            >
+              👤 My Profile
+            </button>
+
+            <button
+              type="button"
+              className="logout-btn-text"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleLogout();
+              }}
+            >
+              🚪 Logout
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );

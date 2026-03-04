@@ -775,6 +775,8 @@ const HomePage = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const saasRef = useRef(null);
+    const [selectedCost, setSelectedCost] = useState(null);
+  const [selectedShowcase, setSelectedShowcase] = useState(null);
 
   // --- Auth State Logic ---
   const [user, setUser] = useState(() => {
@@ -1131,38 +1133,102 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* --- PREMIUM COSTS SECTION --- */}
-      <section className="costs-section">
-        <div className="section-header-pro">
-          <h2>Specialized Care & <span>Costs</span></h2>
-          <p className="section-sub-tag">🛡️ Cashless Insurance & 0% EMI Options Available</p>
-          <div className="accent-line-small"></div>
-        </div>
+      {/* --- PREMIUM COSTS SECTION WITH POPUP --- */}
+<section className="costs-section">
+  <div className="section-header-pro">
+    <h2>Specialized Care & <span>Costs</span></h2>
+    <p className="section-sub-tag">🛡️ Cashless Insurance & 0% EMI Options Available</p>
+    <div className="accent-line-small"></div>
+  </div>
+  
+  <div className="costs-grid">
+    {costPackages.map((pkg, idx) => (
+      <div key={idx} className="cost-card-styled" onClick={() => setSelectedCost(pkg)}>
+        <div className="pkg-badge">{pkg.badge}</div>
+        <div className="cost-icon-circle">{pkg.icon}</div>
+        <h4>{pkg.title}</h4>
+        <p className="pkg-desc-text">{pkg.desc}</p>
         
-        <div className="costs-grid">
-          {costPackages.map((pkg, idx) => (
-            <div key={idx} className="cost-card-styled">
-              <div className="pkg-badge">{pkg.badge}</div>
-              <div className="cost-icon-circle">{pkg.icon}</div>
-              <h4>{pkg.title}</h4>
-              <p className="pkg-desc-text">{pkg.desc}</p>
-              
-              <ul className="pkg-mini-features">
-                {pkg.features.map((feat, i) => (
-                  <li key={i}><span>✓</span> {feat}</li>
-                ))}
-              </ul>
-
-              <div className="cost-info-footer">
-                <div className="cost-price-tag">Starts ₹{pkg.price}</div>
-                {pkg.emi !== "N/A" && <div className="emi-tag">EMI: {pkg.emi}</div>}
-              </div>
-              <button className="pkg-book-btn" onClick={() => navigate("/contact")}>Get Free Quote</button>
-            </div>
+        <ul className="pkg-mini-features">
+          {pkg.features.map((feat, i) => (
+            <li key={i}><span>✓</span> {feat}</li>
           ))}
-        </div>
-      </section>
+        </ul>
 
+        <div className="cost-info-footer">
+          <div className="cost-price-tag">Starts ₹{pkg.price}</div>
+          {pkg.emi !== "N/A" && <div className="emi-tag">EMI: {pkg.emi}</div>}
+        </div>
+        <button className="pkg-book-btn">Get Free Quote</button>
+      </div>
+    ))}
+  </div>
+
+  {/* POPUP MODAL */}
+  {selectedCost && (
+    <div className="modal-overlay" onClick={() => setSelectedCost(null)}>
+      <div className="cost-modal-card" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close-x" onClick={() => setSelectedCost(null)}>×</button>
+        <div className="modal-header">
+          <div className="cost-icon-circle-large">{selectedCost.icon}</div>
+          <h2>{selectedCost.title}</h2>
+          <span className="pkg-badge">{selectedCost.badge}</span>
+        </div>
+        <p className="pkg-desc-text">{selectedCost.desc}</p>
+        <ul className="pkg-mini-features">
+          {selectedCost.features.map((feat, i) => (
+            <li key={i}><span>✓</span> {feat}</li>
+          ))}
+        </ul>
+        <div className="cost-info-footer">
+          <div className="cost-price-tag">Starts ₹{selectedCost.price}</div>
+          {selectedCost.emi !== "N/A" && <div className="emi-tag">EMI: {selectedCost.emi}</div>}
+        </div>
+        <button className="know-more-btn">Know More</button>
+      </div>
+    </div>
+  )}
+</section>
+          {/* --- SHOWCASE SECTION --- */}
+{/* --- SHOWCASE SECTION WITH POPUP --- */}
+<section className="showcase-section">
+  <div className="section-header-pro">
+    <h2>Latest <span>Updates</span></h2>
+    <div className="accent-line-small"></div>
+    <p className="section-sub-tag">Stay updated with new doctors, hospitals, treatments & medicines</p>
+  </div>
+
+  <div className="showcase-grid">
+    {[
+      { title: "Dr. A. Sharma Joined", type: "Doctor", desc: "Cardiologist with 15 yrs experience", badge: "New" },
+      { title: "City Care Hospital Upgrade", type: "Hospital", desc: "Now with Robotic Surgery", badge: "Featured" },
+      { title: "Diabetes Awareness Campaign", type: "Disease", desc: "Free screening this month", badge: "Alert" },
+      { title: "New Medicine: CardioPlus", type: "Medicine", desc: "Reduces cholesterol effectively", badge: "New" }
+    ].map((item, idx) => (
+      <div key={idx} className="showcase-card" onClick={() => setSelectedShowcase(item)}>
+        <div className={`showcase-badge badge-${item.badge.toLowerCase()}`}>{item.badge}</div>
+        <h3>{item.title}</h3>
+        <p>{item.desc}</p>
+        <span className="showcase-type">{item.type}</span>
+      </div>
+    ))}
+  </div>
+
+  {/* Popup */}
+{selectedShowcase && (
+  <div className="popup-overlay" onClick={() => setSelectedShowcase(null)}>
+    <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+      <h3>{selectedShowcase.title}</h3>
+      <p><strong>Type:</strong> {selectedShowcase.type}</p>
+      <p>{selectedShowcase.desc}</p>
+      <div className="popup-btn-group">
+        <button className="popup-btn-knowmore" onClick={() => alert("Connect to details page later")}>Know More</button>
+        <button className="popup-btn-close" onClick={() => setSelectedShowcase(null)}>Close</button>
+      </div>
+    </div>
+  </div>
+)}
+</section>
       {/* --- FOOTER --- */}
       <footer className="main-footer">
         <div className="footer-container">

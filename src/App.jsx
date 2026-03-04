@@ -138,9 +138,6 @@ import AllServicesPage from "./pages/public/AllServicesPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import DoctorsManagement from "./pages/admin/DoctorsManagement";
 import Doctors from "./pages/admin/Doctors";
-import DoctorDetails from "./pages/admin/DoctorDetails";
-import Users from "./pages/admin/Users";
-import Hospitals from "./pages/admin/Hospitals";
 import Labs from "./pages/admin/Labs";
 import AdminAppointments from "./pages/admin/Appointments";
 import SystemLogs from "./pages/admin/SystemLogs";
@@ -168,15 +165,20 @@ import AdminLayout from "./components/layout/AdminLayout";
 import DoctorLayout from "./components/layout/DoctorLayout";
 import PatientLayout from "./components/layout/PatientLayout";
 import PatientAppointments from "./pages/patient/MyAppointments";
-import MyDoctors from "./pages/patient/MyDoctors";
 import Prescriptions from "./pages/patient/Prescriptions";
 import Labreports from "./pages/patient/Labreports";
-import Healthsummary from "./pages/patient/Healthsummary";
-import Reminder from "./pages/patient/reminder";
 import Notifications from "./pages/patient/notifications";
 import Feedback from "./pages/patient/Feedback";
 import Help from "./pages/patient/Help";
 import MedicalRecords from "./pages/patient/MedicalRecords";
+import FindDoctors from "./pages/patient/FindDoctors";
+import MyDoctors from "./pages/patient/MyDoctors";
+import Doctorprofile from "./pages/patient/Doctorprofile";
+import PendingDoctorModal from "./pages/admin/PendingDoctorModal";
+import UserManagement from "./pages/admin/UserManagement";
+import HospitalsModule from "./pages/admin/HospitalsModule";
+import LabsModule from "./pages/doctor/Labs";
+import FeedbackPage from "./pages/admin/FeedbackPage";
 
 
 function App() {
@@ -196,14 +198,16 @@ function App() {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="doctors-management" element={<DoctorsManagement />} />
         <Route path="doctors" element={<Doctors />} />
-        <Route path="doctors/:id" element={<DoctorDetails />} />
+        <Route path="doctors/:id" element={<PendingDoctorModal />} />
         <Route path="verify-doctors" element={<PendingVerifications />} />
-        <Route path="users" element={<Users />} />
-        <Route path="hospitals" element={<Hospitals />} />
+        <Route path="users" element={<UserManagement />} />
+        <Route path="hospitals" element={<HospitalsModule />} />
         <Route path="labs" element={<Labs />} />
         <Route path="appointments" element={<AdminAppointments />} />
         <Route path="profile" element={<AdminProfile />} />
         <Route path="system-logs" element={<SystemLogs />} />
+        <Route path="FeedbackPage" element={<FeedbackPage />} />
+        
       </Route>
 
       {/* --- DOCTOR ROUTES --- */}
@@ -217,6 +221,7 @@ function App() {
         <Route path="notifications" element={<DoctorNotifications />} />
         <Route path="availability" element={<Availability />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="Labs" element={<LabsModule />} />
       </Route>
 
       {/* --- PATIENT ROUTES --- */}
@@ -230,12 +235,13 @@ function App() {
   <Route path="appointments" element={<PatientAppointments />} />
   
   {/* Baaki saare routes jo sidebar mein hain unka path yahan define karna zaroori hai */}
-  <Route path="doctors" element={<MyDoctors/>} />
+    <Route path="finddoctors" element={<FindDoctors/>} />
+
+  <Route path="mydoctors" element={<MyDoctors/>} />
+<Route path="doctorsprofile/:id" element={<Doctorprofile />} />
   <Route path="records" element={<MedicalRecords/>} />
   <Route path="prescriptions" element={<Prescriptions/>} />
   <Route path="lab-reports" element={<Labreports/>} />
-  <Route path="health-summary" element={<Healthsummary/>} />
-  <Route path="reminders" element={<Reminder/>} />
   <Route path="notifications" element={<Notifications/>} />
   <Route path="feedback" element={<Feedback/>} />
   <Route path="help" element={<Help/>} />
