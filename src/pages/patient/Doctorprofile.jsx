@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {DOCTORS} from "../../utils/doctorsDummyprofileData"
-import "./DoctorProfile.css";
+import "./Doctorprofile.css";
 
 export default function DoctorProfile() {
   const { id } = useParams();
