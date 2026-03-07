@@ -1023,7 +1023,6 @@ const searchResults = useMemo(() => {
           <div className="sidebar-link" onClick={() => {navigate("/all-services"); setIsSidebarOpen(false);}}>🛠️ Services</div>
           <div className="sidebar-link" onClick={() => {navigate("/blogs"); setIsSidebarOpen(false);}}>📰 Doctor Blogs</div>
           <div className="sidebar-link" onClick={() => {navigate("/contact"); setIsSidebarOpen(false);}}>📞 Contact Us</div>
-          <div className="sidebar-link" onClick={() => {navigate("/OfficialHelplines"); setIsSidebarOpen(false);}}>📞 EmergencySupport</div>
 
           <p className="sidebar-label">SaaS Solutions</p>
           <div className="sidebar-link" onClick={() => setDoctorSub(!doctorSub)}>👨‍⚕️ For Doctors {doctorSub ? "▾" : "▸"}</div>

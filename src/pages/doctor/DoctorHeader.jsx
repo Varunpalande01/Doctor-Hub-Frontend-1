@@ -104,7 +104,7 @@ const DoctorHeader = ({ setIsMobileOpen }) => {
   };
 
   const routeTitles = {
-    "/doctor/dashboard": "Dashboard Overview",
+    "/doctor/dashboard": "Dashboard",
     "/doctor/appointments": "My Appointments",
     "/doctor/patients": "Patient Records",
     "/doctor/profile": "My Profile",

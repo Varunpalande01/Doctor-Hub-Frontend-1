@@ -38,8 +38,8 @@ a, a:hover, a:visited, a:active {
 /* Ensure wrapper is only as wide as the icon */
 .profile-wrapper {
     position: relative;
-    display: inline-flex; /* Block ki jagah inline-flex taki dropdown width sahi pakde */
-    
+    display: inline-flex;
+    align-items: center;
 }
 
 /* Squircle Icon */
@@ -71,26 +71,43 @@ a, a:hover, a:visited, a:active {
    ========================================== */
 .profile-wrapper .dropdown-menu {
     position: absolute;
-    top: calc(100% + 15px); 
+    top: calc(100% + 10px); 
     right: 0; /* Laptop edge alignment fix */
     background: white;
     width: 280px; /* Professional width */
     min-width: 280px; 
+    min-height:260px ;
+    height:auto ;
     border-radius: 20px;
     box-shadow: var(--shadow-premium);
     border: 1px solid var(--border);
     overflow: hidden;
-    z-index: 10000;
+    z-index: 99999;        /* Sabse upar dikhne ke liye */
+    display: block;
     transform-origin: top right;
     animation: dropdownFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     left: auto;
 }
 
-@keyframes dropdownPop {
-    from { opacity: 0; transform: scale(0.9) translateY(-10px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
+.profile-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+    width: 100%;
+    height: 15px;
 }
 
+@keyframes dropdownPop {
+    from { 
+        opacity: 0; 
+        transform: scale(0.95) translateY(-10px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1) translateY(0); 
+    }
+}
 /* Header inside Dropdown */
 .user-info-header {
     padding: 20px;
@@ -387,10 +404,23 @@ a, a:hover, a:visited, a:active {
 .nav-item:hover { color: var(--primary); }
 
 /* Desktop Dropdown Menu */
-.dropdown-menu-desktop {
-  position: absolute; top: 40px; left: 0; background: white; 
-  padding: 10px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  min-width: 160px; border: 1px solid var(--border); z-index: 100;
+/* Desktop Dropdown Fix */
+.dropdown-menu-desktop, .dropdown-menu.alignment-fix {
+  position: absolute;
+  top: 100%; /* Header ke thik neeche */
+  right: 0;
+  background: white;
+  min-width: 200px;
+  box-shadow: 0px 10px 25px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 10px 0;
+  z-index: 9999; /* Isse upar kuch nahi hona chahiye */
+  display: block; /* JSX handles the mounting, so just ensure it's visible */
+}
+
+/* Parent container ko relative rakho */
+.nav-item.dropdown-toggle, .profile-wrapper {
+  position: relative;
 }
 .dropdown-item { padding: 10px 15px; font-size: 14px; font-weight: 500; cursor: pointer; border-radius: 8px; transition: 0.2s; }
 .dropdown-item:hover { background: #f1f5f9; color: var(--primary); }

@@ -718,7 +718,7 @@ const AllServicesPage = () => {
       <aside className={`mobile-sidebar ${isSidebarOpen ? "open" : ""}`}>
         <div className="sidebar-header">
           <h2 className="brand-logo-sidebar">Doc<span>Hub</span></h2>
-          <button className="close-sidebar" onClick={() => setIsSidebarOpen(false)}>×</button>
+          <button className="close-sidebar-btn" onClick={() => setIsSidebarOpen(false)}>×</button>
         </div>
         <div className="sidebar-content">
           <p className="sidebar-label">Navigation</p>
