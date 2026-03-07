@@ -7,7 +7,7 @@ const PatientHeader = ({ setIsMobileOpen, isCollapsed }) => {
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const location = useLocation();
   const dropdownRef = useRef(null); // Click outside ke liye ref
-
+  
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
     window.location.href = "/";
@@ -74,7 +74,7 @@ const PatientHeader = ({ setIsMobileOpen, isCollapsed }) => {
               <div className="btn-icon-3d profile-blue">
                 <FiUser />
               </div>
-              <span>Update Profile</span>
+              <span>My Profile</span>
             </Link>          
             
             <button onClick={handleLogout} className="logout-btn-premium">

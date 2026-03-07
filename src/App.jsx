@@ -179,6 +179,7 @@ import UserManagement from "./pages/admin/UserManagement";
 import HospitalsModule from "./pages/admin/HospitalsModule";
 import LabsModule from "./pages/doctor/Labs";
 import FeedbackPage from "./pages/admin/FeedbackPage";
+import AdsManagement from "./pages/admin/AdsManagement";
 
 
 function App() {
@@ -193,6 +194,7 @@ function App() {
       <Route path="/blogs" element={<Blogs />} />
       <Route path="/all-services" element={<AllServicesPage />} />
 
+
       {/* --- ADMIN ROUTES --- */}
       <Route path="/admin/*" element={<AdminLayout />}>
         <Route path="dashboard" element={<AdminDashboard />} />
@@ -206,6 +208,7 @@ function App() {
         <Route path="appointments" element={<AdminAppointments />} />
         <Route path="profile" element={<AdminProfile />} />
         <Route path="system-logs" element={<SystemLogs />} />
+        <Route path="Ads Management" element={<AdsManagement />} />
         <Route path="FeedbackPage" element={<FeedbackPage />} />
         
       </Route>

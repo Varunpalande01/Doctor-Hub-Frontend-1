@@ -757,16 +757,18 @@
 // export default HomePage;
 
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { doctorsDummyData } from "../../utils/doctorsDummyData";
 import heroImg from "../../assets/images/doctor1.png";
 import "./Home.css";
-import Logo from "../../assets/images/logo.png"
+import Logo from "../../assets/images/logo.png";
+import Fuse from "fuse.js"; 
 const HomePage = () => {
   const navigate = useNavigate();
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchText, setSearchText] = useState("");
+const [showSearchResults, setShowSearchResults] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [saasDropdown, setSaasDropdown] = useState(false);
   const [doctorSub, setDoctorSub] = useState(false);
@@ -821,51 +823,53 @@ const HomePage = () => {
     return () => clearInterval(timer);
   }, [ads.length]);
 
-  const specialties = [
-    { name: "Cardiology", icon: "❤️" }, { name: "Neurology", icon: "🧠" },
-    { name: "Pediatrics", icon: "👶" }, { name: "Dermatology", icon: "✨" },
-    { name: "Orthopedics", icon: "🦴" }, { name: "Dental", icon: "🦷" },
-    { name: "Eye Care", icon: "👁️" }
-  ];
-
-  const costPackages = [
-    { 
-      title: "Maternity Care", 
-      desc: "Luxury delivery suites & neonatal care.", 
-      price: "45,000", 
-      icon: "🤰", 
-      badge: "Trending",
-      emi: "₹3,750/mo",
-      features: ["Private Room", "Nursing", "Medicines"]
-    },
-    { 
-      title: "Knee Surgery", 
-      desc: "Robotic assisted with fast recovery.", 
-      price: "1,20,000", 
-      icon: "🦴", 
-      badge: "New",
-      emi: "₹10,000/mo",
-      features: ["Implants", "Physio", "Post-Op Care"]
-    },
-    { 
-      title: "Heart Checkup", 
-      desc: "Full cardiac screening & consultation.", 
-      price: "4,999", 
-      icon: "❤️", 
-      badge: "Essential",
-      emi: "N/A",
-      features: ["ECG/Echo", "Blood Tests", "Expert Opinion"]
-    },
-    { 
-      title: "Transplant Care", 
-      desc: "Advanced organ transplant center.", 
-      price: "4,50,000", 
-      icon: "🏥", 
-      badge: "Specialist",
-      emi: "₹37,500/mo",
-      features: ["Pre-Op Tests", "ICU Support", "NABH Center"]
-    }
-  ];
+  const specialties = useMemo(() => [
+  { name: "Cardiology", icon: "❤️" },
+  { name: "Neurology", icon: "🧠" },
+  { name: "Pediatrics", icon: "👶" },
+  { name: "Dermatology", icon: "✨" },
+  { name: "Orthopedics", icon: "🦴" },
+  { name: "Dental", icon: "🦷" },
+  { name: "Eye Care", icon: "👁️" }
+], []);
+  const costPackages = useMemo(() => [
+  { 
+    title: "Maternity Care", 
+    desc: "Luxury delivery suites & neonatal care.", 
+    price: "45,000", 
+    icon: "🤰", 
+    badge: "Trending",
+    emi: "₹3,750/mo",
+    features: ["Private Room", "Nursing", "Medicines"]
+  },
+  { 
+    title: "Knee Surgery", 
+    desc: "Robotic assisted with fast recovery.", 
+    price: "1,20,000", 
+    icon: "🦴", 
+    badge: "New",
+    emi: "₹10,000/mo",
+    features: ["Implants", "Physio", "Post-Op Care"]
+  },
+  { 
+    title: "Heart Checkup", 
+    desc: "Full cardiac screening & consultation.", 
+    price: "4,999", 
+    icon: "❤️", 
+    badge: "Essential",
+    emi: "N/A",
+    features: ["ECG/Echo", "Blood Tests", "Expert Opinion"]
+  },
+  { 
+    title: "Transplant Care", 
+    desc: "Advanced organ transplant center.", 
+    price: "4,50,000", 
+    icon: "🏥", 
+    badge: "Specialist",
+    emi: "₹37,500/mo",
+    features: ["Pre-Op Tests", "ICU Support", "NABH Center"]
+  }
+], []);
 
   const trendingSearches = ["Fever", "Knee Pain", "Skin Allergy", "Diabetes"];
 
@@ -879,11 +883,67 @@ const HomePage = () => {
   }, []);
 
   const filteredDoctors = doctorsDummyData.filter((doc) => {
-    const q = searchQuery.toLowerCase();
+    const q = searchText.toLowerCase();
     return doc.name.toLowerCase().includes(q) || doc.specialty.toLowerCase().includes(q);
   });
+const searchResults = useMemo(() => {
 
-  return (
+  if (!searchText) return [];
+
+  const query = searchText.toLowerCase();
+
+  const doctorResults = doctorsDummyData
+  .filter((doc) => {
+
+    const searchableText = `
+      ${doc.name}
+      ${doc.specialty}
+      ${doc.city}
+      ${doc.location}
+      ${doc.hospitalName}
+      ${doc.tags.join(" ")}
+      ${doc.conditions.join(" ")}
+      ${doc.searchKeywords.join(" ")}
+      ${doc.languages.join(" ")}
+      ${doc.bio}
+    `.toLowerCase();
+
+    return (
+  searchableText.includes(query) ||
+  doc.specialty.toLowerCase().includes(query) ||
+  query.includes(doc.specialty.toLowerCase()) ||
+  doc.specialty.toLowerCase().replace("ist","y").includes(query)
+);
+
+  })
+    .map((doc) => ({
+      type: "doctor",
+      data: doc
+    }));
+
+  const specialtyResults = specialties
+    .filter((s) => s.name.toLowerCase().includes(query))
+    .map((s) => ({
+      type: "specialty",
+      data: s
+    }));
+
+  const costResults = costPackages
+    .filter((c) =>
+      `${c.title} ${c.desc}`.toLowerCase().includes(query)
+    )
+    .map((c) => ({
+      type: "cost",
+      data: c
+    }));
+
+  return [
+    ...doctorResults,
+    ...specialtyResults,
+    ...costResults
+  ];
+
+}, [searchText, specialties, costPackages]);  return (
     <div className="home-wrapper">
       <div className="bg-blob blob-1"></div>
       <div className="bg-blob blob-2"></div>
@@ -961,8 +1021,9 @@ const HomePage = () => {
           <div className="sidebar-link active-side" onClick={() => {navigate("/"); setIsSidebarOpen(false);}}>🏠 Home</div>
           <div className="sidebar-link" onClick={() => {navigate("/about"); setIsSidebarOpen(false);}}>ℹ️ About Us</div>
           <div className="sidebar-link" onClick={() => {navigate("/all-services"); setIsSidebarOpen(false);}}>🛠️ Services</div>
-          <div className="sidebar-link" onClick={() => {navigate("/blogs"); setIsSidebarOpen(false);}}>📰 Doctor's Blogs</div>
+          <div className="sidebar-link" onClick={() => {navigate("/blogs"); setIsSidebarOpen(false);}}>📰 Doctor Blogs</div>
           <div className="sidebar-link" onClick={() => {navigate("/contact"); setIsSidebarOpen(false);}}>📞 Contact Us</div>
+          <div className="sidebar-link" onClick={() => {navigate("/OfficialHelplines"); setIsSidebarOpen(false);}}>📞 EmergencySupport</div>
 
           <p className="sidebar-label">SaaS Solutions</p>
           <div className="sidebar-link" onClick={() => setDoctorSub(!doctorSub)}>👨‍⚕️ For Doctors {doctorSub ? "▾" : "▸"}</div>
@@ -998,8 +1059,9 @@ const HomePage = () => {
           <span className="nav-item active-tab" onClick={() => navigate("/")}>Home</span>
           <span className="nav-item" onClick={() => navigate("/about")}>About Us</span>
           <span className="nav-item" onClick={() => navigate("/all-services")}>Services</span>
-          <span className="nav-item" onClick={() => navigate("/blogs")}>Doctor's Blogs</span>
+          <span className="nav-item" onClick={() => navigate("/blogs")}>Doctor Blogs</span>
           <span className="nav-item" onClick={() => navigate("/contact")}>Contact Us</span>
+          
 
           <div className="nav-item dropdown-toggle" ref={saasRef}>
             <span onClick={() => setSaasDropdown(!saasDropdown)}>
@@ -1048,6 +1110,7 @@ const HomePage = () => {
           <button className="hamburger-menu" onClick={() => setIsSidebarOpen(true)}>☰</button>
         </div>
       </header>
+      
       {/* --- HERO SECTION --- */}
       <section className="hero-section">
         <div className="hero-container">
@@ -1057,20 +1120,38 @@ const HomePage = () => {
             <div className="search-box-centered">
               <div className="search-input-wrapper">
                 <span className="search-icon-hero">🔍</span>
-                <input 
-                  type="text" 
-                  placeholder="Search by name, specialty or disease..." 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
+                <input
+  type="text"
+  placeholder="Search doctors, diseases, clinics..."
+  value={searchText}
+  onChange={(e) => {
+    setSearchText(e.target.value);
+    setShowSearchResults(true);
+  }}
+/>
+            
+               {searchText && (
+    <button
+      className="search-clear-btn"
+      onClick={()=>{
+        setSearchText("");
+        setShowSearchResults(false);
+      }}
+    >
+      ✕
+    </button>
+  )}
+  </div>
               <button className="hero-search-btn">Find Doctor</button>
             </div>
             <div className="trending-tags">
               <span className="trending-label">🔥 Common Disease :-</span>
               <div className="tags-flex">
                 {trendingSearches.map((item, idx) => (
-                  <span key={idx} className="trend-tag" onClick={() => setSearchQuery(item)}>{item}</span>
+                  <span key={idx} className="trend-tag" onClick={() => {
+  setSearchText(item)
+  setShowSearchResults(true)
+}}>{item}</span>
                 ))}
               </div>
             </div>
@@ -1080,6 +1161,66 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+     {showSearchResults && searchText && (
+  <section className="search-results">
+    {/* Count header */}
+    <h2 className="section-title">
+      Doctors Found: {searchResults.filter(i => i.type === "doctor").length}
+    </h2>
+
+    <div className="doctor-grid">
+      {/* Yahan sirf Doctors ka logic hai */}
+      {searchResults.filter(item => item.type === "doctor").length > 0 ? (
+        searchResults
+          .filter((item) => item.type === "doctor")
+          .map((item, index) => {
+            const doc = item.data;
+            return (
+              <div
+                key={index}
+                className="doctor-card-pro"
+                onClick={() => setSelectedDoctor(doc)}
+              >
+                <div className="doc-image-box">
+                  <img src={doc.profileImage} alt={doc.name} />
+                  <div className="doc-experience-badge">
+                    {doc.experience || "10"}+ Yrs Exp
+                  </div>
+                </div>
+                <div className="doc-content-box">
+                  <span className="doc-specialty-pill">{doc.specialty}</span>
+                  <h3 className="doc-name-text">{doc.name}</h3>
+                  <p className="doc-loc">📍 {doc.city}</p>
+                  <p className="doc-fee-text">💰 Fee: ₹{doc.fees || "500"}</p>
+                  <div className="doc-card-footer">
+                    <button className="view-profile-pro">Details</button>
+                    <button
+                      className="book-now-pro"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/book/${doc.id}`);
+                      }}
+                    >
+                      Book Now
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+      ) : (
+        /* Agar koi doctor nahi mila toh ye message aayega */
+        <div className="no-results-box" style={{ textAlign: 'center', width: '100%', padding: '40px' }}>
+          <h3>No Doctors Found for ""</h3>
+          <p>Try searching for a different specialty or name.</p>
+        </div>
+      )}
+    </div>
+    {/* Maine yahan se Specialty aur Cost waale saare maps hata diye hain taaki white cards na dikhen */}
+  </section>
+)}
+{!searchText && (
+<>
 
       {/* --- DYNAMIC HOSPITAL AD BANNER --- */}
       <section className="hospital-ad-section">
@@ -1097,7 +1238,10 @@ const HomePage = () => {
       <section className="specialties-section">
         <div className="specialties-grid">
           {specialties.map((spec, i) => (
-            <div key={i} className="spec-chip" onClick={() => setSearchQuery(spec.name)}>
+            <div key={i} className="spec-chip" onClick={() => {
+  setSearchText(spec.name)
+  setShowSearchResults(true)
+}}>
               <span className="spec-icon-box">{spec.icon}</span>
               <span className="spec-name-box">{spec.name}</span>
             </div>
@@ -1229,6 +1373,8 @@ const HomePage = () => {
   </div>
 )}
 </section>
+</>
+)}
       {/* --- FOOTER --- */}
       <footer className="main-footer">
         <div className="footer-container">
@@ -1261,7 +1407,7 @@ const HomePage = () => {
             <ul className="footer-list">
                <li onClick={() => navigate("/")}>Home</li>
                <li onClick={() => navigate("/about")}>About Us</li>
-               <li onClick={() => navigate("/blogs")}>Doctor's Blogs</li>
+               <li onClick={() => navigate("/blogs")}>Doctor Blogs</li>
                <li onClick={() => navigate("/all-services")}>Services</li>
                <li onClick={() => navigate("/contact")}>Contact Us</li>
             </ul>

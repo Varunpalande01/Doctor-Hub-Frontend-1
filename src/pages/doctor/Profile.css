@@ -273,3 +273,280 @@
     text-align: center;
   }
 }
+/* --- GLOBAL --- */
+.doctor-profile-page {
+  padding: 30px;
+  background: #f3f6f9;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+}
+
+.profile-top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto 24px auto;
+}
+
+.profile-subtext { color: #6b7280; font-size: 14px; }
+
+/* --- VIEW MODE STYLING --- */
+.profile-view-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.view-card {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.doctor-header-top {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.view-avatar {
+  width: 90px;
+  height: 90px;
+  background: #eef2f6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 45px;
+}
+
+.view-title-group h3 { font-size: 24px; margin: 0; display: flex; align-items: center; gap: 8px; }
+.verified-check { color: #10b981; font-size: 18px; }
+.view-spec { color: #047857; font-weight: 600; margin: 5px 0; }
+
+.view-tags { display: flex; gap: 10px; margin-top: 10px; }
+.view-tags span {
+  background: #f3f4f6;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.view-about { margin-top: 20px; padding-top: 15px; border-top: 1px solid #f3f4f6; font-size: 14px; line-height: 1.6; }
+
+.view-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.view-card h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #111827;
+  font-size: 16px;
+  border-bottom: 2px solid #ecfdf5;
+  padding-bottom: 8px;
+}
+
+.view-details p { margin: 10px 0; font-size: 14px; color: #374151; }
+.view-divider { border: none; border-top: 1px dashed #e5e7eb; margin: 15px 0; }
+
+.view-entry-item {
+  background: #f9fafb;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.view-entry-title { font-weight: 700; font-size: 14px; margin: 0; }
+.view-entry-sub { font-size: 13px; color: #6b7280; margin: 4px 0; }
+.view-fee { color: #059669; font-weight: 700; font-size: 13px; margin: 0; }
+
+/* --- FORM & BUTTONS --- */
+.profile-form { background: #fff; padding: 24px; border-radius: 16px; max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+.section { border: 1px solid #e5e7eb; padding: 20px; border-radius: 12px; }
+.input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.edit-profile-btn { background: #3b82f6; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+.save-btn { background: #10b981; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+.cancel-btn { background: #f3f4f6; color: #374151; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; }
+.form-buttons-fixed { display: flex; justify-content: flex-end; gap: 15px; margin-top: 20px; }
+
+.add-more-btn { background: #ecfdf5; color: #047857; border: 1px dashed #10b981; padding: 10px; border-radius: 8px; width: 100%; cursor: pointer; margin-top: 10px; }
+.multi-entry-block { background: #f9fafb; padding: 15px; border-radius: 10px; margin-bottom: 10px; }
+.entry-tag { font-size: 11px; font-weight: 800; color: #10b981; margin-bottom: 5px; }
+.file-row { display: flex; gap: 10px; margin-bottom: 10px; }
+.sub-label-header { font-weight: 700; margin: 20px 0 10px; color: #1f2937; border-left: 3px solid #10b981; padding-left: 10px; }
+.signature-box { margin-top: 20px; padding: 15px; background: #fff; border: 1px dashed #d1d5db; border-radius: 8px; }
+.subtext { font-size: 12px; color: #9ca3af; margin-top: 5px; }
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .input-grid, .view-grid { grid-template-columns: 1fr; }
+  .doctor-header-top { flex-direction: column; text-align: center; }
+  .form-buttons-fixed { flex-direction: column; }
+}
+/* --- GLOBAL --- */
+.doctor-profile-page {
+  padding: 30px;
+  background: #f3f6f9;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+}
+
+.profile-top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto 24px auto;
+}
+
+.profile-subtext { color: #6b7280; font-size: 14px; }
+
+/* --- PROFILE IMAGE STYLES --- */
+.photo-upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.photo-upload-container {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-top: 10px;
+}
+
+.photo-preview, .view-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #eef2f6;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: 40px;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #10b981;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.custom-file-upload:hover { background: #059669; }
+.photo-input-group input[type="file"] { display: none; }
+
+/* --- VIEW MODE STYLING --- */
+.profile-view-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.view-card {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.doctor-header-top {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.view-title-group h3 { font-size: 24px; margin: 0; display: flex; align-items: center; gap: 8px; }
+.verified-check { color: #10b981; font-size: 18px; }
+.view-spec { color: #047857; font-weight: 600; margin: 5px 0; }
+
+.view-tags { display: flex; gap: 10px; margin-top: 10px; }
+.view-tags span {
+  background: #f3f4f6;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.view-about { margin-top: 20px; padding-top: 15px; border-top: 1px solid #f3f4f6; font-size: 14px; line-height: 1.6; }
+
+.view-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.view-card h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #111827;
+  font-size: 16px;
+  border-bottom: 2px solid #ecfdf5;
+  padding-bottom: 8px;
+}
+
+.view-details p { margin: 10px 0; font-size: 14px; color: #374151; }
+.view-divider { border: none; border-top: 1px dashed #e5e7eb; margin: 15px 0; }
+
+.view-entry-item {
+  background: #f9fafb;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.view-entry-title { font-weight: 700; font-size: 14px; margin: 0; }
+.view-entry-sub { font-size: 13px; color: #6b7280; margin: 4px 0; }
+.view-fee { color: #059669; font-weight: 700; font-size: 13px; margin: 0; }
+
+/* --- FORM & BUTTONS --- */
+.profile-form { background: #fff; padding: 24px; border-radius: 16px; max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+.section { border: 1px solid #e5e7eb; padding: 20px; border-radius: 12px; }
+.input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.edit-profile-btn { background: #3b82f6; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+.save-btn { background: #10b981; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; }
+.cancel-btn { background: #f3f4f6; color: #374151; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; }
+.form-buttons-fixed { display: flex; justify-content: flex-end; gap: 15px; margin-top: 20px; }
+
+.add-more-btn { background: #ecfdf5; color: #047857; border: 1px dashed #10b981; padding: 10px; border-radius: 8px; width: 100%; cursor: pointer; margin-top: 10px; }
+.multi-entry-block { background: #f9fafb; padding: 15px; border-radius: 10px; margin-bottom: 10px; }
+.entry-tag { font-size: 11px; font-weight: 800; color: #10b981; margin-bottom: 5px; }
+.file-row { display: flex; gap: 10px; margin-bottom: 10px; }
+.sub-label-header { font-weight: 700; margin: 20px 0 10px; color: #1f2937; border-left: 3px solid #10b981; padding-left: 10px; }
+.signature-box { margin-top: 20px; padding: 15px; background: #fff; border: 1px dashed #d1d5db; border-radius: 8px; }
+.subtext { font-size: 12px; color: #9ca3af; margin-top: 5px; }
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+@media (max-width: 768px) {
+  .input-grid, .view-grid { grid-template-columns: 1fr; }
+  .doctor-header-top, .photo-upload-container { flex-direction: column; text-align: center; }
+  .form-buttons-fixed { flex-direction: column; }
+  .photo-preview { margin: 0 auto; }
+}

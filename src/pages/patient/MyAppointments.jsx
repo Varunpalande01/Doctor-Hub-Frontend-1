@@ -133,7 +133,7 @@ const PatientAppointments = () => {
                             </div>
                         </div>
                         <div className="card-actions-container">
-                            <button className="btn-view-main" onClick={() => setSelectedAppointment(app)}>View Details</button>
+                            <button className="btn-view-main" onClick={() => setSelectedAppointment(app)}> 👁️‍🗨️ View Details</button>
                             {app.status !== "Cancelled" && app.status !== "Completed" && (
                                 <>
                                     <button className="btn-reschedule-sub" onClick={() => setRescheduleTarget(app)}>Reschedule</button>

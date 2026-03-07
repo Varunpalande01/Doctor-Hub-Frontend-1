@@ -59,7 +59,8 @@ const HospitalsModule = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [actionType, setActionType] = useState("");
-  const [dropdownOpenId, setDropdownOpenId] = useState(null); // row dropdown toggle
+  const [dropdownOpenId, setDropdownOpenId] = useState(null);
+  const [hospitals, setHospitals] = useState(hospitalsData); // row dropdown toggle
   /* =======================
    PAGINATION STATE
 ======================= */
@@ -73,8 +74,7 @@ const recordsPerPage = 10;
     setStatusFilter("All");
     setTypeFilter("All");
     setCityFilter("All");
-    setSelectedHospital(hospitalsData[0]);
-  };
+setSelectedHospital(hospitals[0]);  };
   /* =======================
    PAGINATION LOGIC
 ======================= */
@@ -85,8 +85,8 @@ const recordsPerPage = 10;
      FILTER LOGIC
   ======================= */
   const filteredHospitals = useMemo(() => {
-    return hospitalsData.filter((h) => {
-      const matchSearch =
+return hospitals.filter((h) => {
+        const matchSearch =
         h.name.toLowerCase().includes(searchText.toLowerCase()) ||
         h.city.toLowerCase().includes(searchText.toLowerCase());
 
@@ -101,7 +101,7 @@ const recordsPerPage = 10;
 
       return matchSearch && matchStatus && matchType && matchCity;
     });
-  }, [searchText, statusFilter, typeFilter, cityFilter]);
+  }, [hospitals, searchText, statusFilter, typeFilter, cityFilter]);
 /* =======================
    PAGINATION LOGIC
 ======================= */
@@ -196,7 +196,7 @@ const currentRecords = filteredHospitals.slice(
           <div className="stat-icon-box blue"><Users size={24} /></div>
           <div className="stat-info">
             <span className="stat-label">Total Hospitals</span>
-            <span className="stat-value">{hospitalsData.length}</span>
+            <span className="stat-value">{hospitals.length}</span>
           </div>
         </div>
 
@@ -205,7 +205,7 @@ const currentRecords = filteredHospitals.slice(
           <div className="stat-info">
             <span className="stat-label">Pending Verification</span>
             <span className="stat-value">
-              {hospitalsData.filter(h => h.verificationStatus === "Pending").length}
+              {hospitals.filter(h => h.verificationStatus === "Pending").length}
             </span>
           </div>
         </div>
@@ -215,7 +215,7 @@ const currentRecords = filteredHospitals.slice(
           <div className="stat-info">
             <span className="stat-label">Active Hospitals</span>
             <span className="stat-value">
-              {hospitalsData.filter(h => h.activeStatus === "Active").length}
+              {hospitals.filter(h => h.activeStatus === "Active").length  }
             </span>
           </div>
         </div>
@@ -402,10 +402,36 @@ const currentRecords = filteredHospitals.slice(
           </div>
         </div>
       </div><div className="modal-actions">
-    <button className="btn green">Activate</button>
-    <button className="btn orange">Suspend</button>
-    <button className="btn red">Reject</button>
-  </div>
+  <button
+    className="btn green"
+    onClick={() => {
+      setActionType("activate");
+      setIsConfirmModalOpen(true);
+    }}
+  >
+    Activate
+  </button>
+
+  <button
+    className="btn orange"
+    onClick={() => {
+      setActionType("suspend");
+      setIsConfirmModalOpen(true);
+    }}
+  >
+    Suspend
+  </button>
+
+  <button
+    className="btn red"
+    onClick={() => {
+      setActionType("reject");
+      setIsConfirmModalOpen(true);
+    }}
+  >
+    Reject
+  </button>
+</div>
     </div>
   </div>
 )}
@@ -428,18 +454,43 @@ const currentRecords = filteredHospitals.slice(
                   <button
                     className="btn red"
                     onClick={() => {
-                      setSelectedHospital({
-                        ...selectedHospital,
-                        activeStatus:
-                          actionType === "activate"
-                            ? "Active"
-                            : actionType === "suspend"
-                            ? "Suspend"
-                            : "Suspended",
-                      });
-                      setIsConfirmModalOpen(false);
-                      setIsViewModalOpen(false);
-                    }}
+
+const updatedHospitals = hospitals.map((h) => {
+
+  if (h.id === selectedHospital.id) {
+
+    return {
+      ...h,
+      activeStatus:
+        actionType === "activate"
+          ? "Active"
+          : actionType === "suspend"
+          ? "Suspend"
+          : "Suspended"
+    };
+
+  }
+
+  return h;
+
+});
+
+setHospitals(updatedHospitals);
+
+setSelectedHospital({
+  ...selectedHospital,
+  activeStatus:
+    actionType === "activate"
+      ? "Active"
+      : actionType === "suspend"
+      ? "Suspend"
+      : "Suspended"
+});
+
+setIsConfirmModalOpen(false);
+setIsViewModalOpen(false);
+
+}}
                   >
                     Confirm
                   </button>

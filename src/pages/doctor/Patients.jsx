@@ -478,8 +478,8 @@ const Patients = () => {
                   )}
                 </td>
                 <td>
-                  <button onClick={() => navigate(`/doctor/patients/${p.id}`)}>
-                    View
+                  <button className="" onClick={() => navigate(`/doctor/patients/${p.id}`)}>
+                   👁️‍🗨️ 
                   </button>
                 </td>
               </tr>
@@ -506,7 +506,7 @@ const Patients = () => {
               )}
             </p>
             <button onClick={() => navigate(`/doctor/patients/${p.id}`)}>
-              View Details
+             👁️‍🗨️ 
             </button>
           </div>
         ))}

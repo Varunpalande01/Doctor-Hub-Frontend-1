@@ -173,7 +173,7 @@
 }
 
 .table-view thead {
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #ffffff, #ffffff);
   color: white;
 }
 
@@ -205,7 +205,7 @@
 /* Action Button */
 .table-view button {
   padding: 6px 12px;
-  background: #10b981;
+  background: #ffffff;
   color: white;
   border: none;
   border-radius: 8px;

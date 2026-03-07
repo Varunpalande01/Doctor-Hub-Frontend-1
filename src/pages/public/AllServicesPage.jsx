@@ -726,7 +726,7 @@ const AllServicesPage = () => {
           <div className="sidebar-nav-link" onClick={() => {navigate("/about"); setIsSidebarOpen(false);}}>ℹ️ About Us</div>
                     <div className="sidebar-nav-link active-side">🛠️ Services</div>
 
-          <div className="sidebar-nav-link" onClick={() => {navigate("/blogs"); setIsSidebarOpen(false);}}>📰 Doctor's Blogs</div>
+          <div className="sidebar-nav-link" onClick={() => {navigate("/blogs"); setIsSidebarOpen(false);}}>📰 Doctor Blogs</div>
           <div className="sidebar-nav-link" onClick={() => {navigate("/contact"); setIsSidebarOpen(false);}}>📞 Contact Us</div>
 
           <p className="sidebar-label">SaaS Solutions</p>
@@ -752,14 +752,16 @@ const AllServicesPage = () => {
           <span className="nav-item" onClick={() => navigate("/about")}>About Us</span>
                     <span className="nav-item active-tab">Services</span>
 
-          <span className="nav-item" onClick={() => navigate("/blogs")}>Doctor's Blogs</span>
+          <span className="nav-item" onClick={() => navigate("/blogs")}>Doctor Blogs</span>
           <span className="nav-item" onClick={() => navigate("/contact")}>Contact Us</span>
           <div className="nav-item dropdown-toggle" ref={saasRef}>
-            <span onClick={() => setSaasDropdown(!saasDropdown)}>SaaS For ▾</span>
+            <span onClick={() => setSaasDropdown(!saasDropdown)}>
+              SaaS For {saasDropdown ? "▴" : "▾"}
+            </span>
             {saasDropdown && (
-              <div className="dropdown-menu">
-                <div className="dropdown-item" onClick={() => navigate("/doctor/dashboard")}>For Doctors ▸</div>
-                <div className="dropdown-item" onClick={() => navigate("/patient/dashboard")}>For Patients ▸</div>
+              <div className="dropdown-menu-desktop">
+                <div className="dropdown-item" onClick={() => navigate("/doctor/dashboard")}>For Doctors</div>
+                <div className="dropdown-item" onClick={() => navigate("/patient/dashboard")}>For Patients</div>
               </div>
             )}
           </div>
@@ -852,7 +854,7 @@ const AllServicesPage = () => {
       <ul className="footer-list">
          <li onClick={() => navigate("/")}>Home</li>
          <li onClick={() => navigate("/about")}>About Us</li>
-              <li onClick={() => navigate("/blogs")}>Doctor's Blogs</li>
+              <li onClick={() => navigate("/blogs")}>Doctor Blogs</li>
                <li onClick={() => navigate("/all-services")}>Services</li>
         <li onClick={() => navigate("/contact")}>Contact Us</li>
       </ul>

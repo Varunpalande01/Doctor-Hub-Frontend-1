@@ -459,8 +459,8 @@ box-shadow: var(--shadow-premium);  transition: all 0.3s ease;
 }
 
 .btn-view-main {
-  background: var(--primary);
-  color: white;
+  background: white;
+  color: rgb(0, 0, 0);
   box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
 }
 

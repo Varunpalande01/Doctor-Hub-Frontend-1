@@ -19,7 +19,7 @@
 
 .home-wrapper {
   background-color: var(--white);
-  overflow-x: hidden;
+  overflow-x: visible;
 }
 /* --- HEADER STYLING --- */
 .home-header {
@@ -31,7 +31,7 @@
   background: var(--white);
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 2000;
   border-bottom: 1px solid var(--border);
 }
 
@@ -49,17 +49,18 @@
 .header-nav {
   display: flex;
   gap: 30px;
-  align-items: center; /* Items ko vertically center rakhne ke liye */
+  align-items: center;
+  height: 100%;
 }
 
 /* YAHAN FIX HAI: Parent ko relative dena zaroori hai */
 .nav-item {
+  position: relative;
   font-weight: 600;
   color: var(--text-dark);
   cursor: pointer;
   transition: 0.3s;
   font-size: 15px;
-  position: relative; /* Dropdown iske hisaab se align hoga */
   display: flex;
   align-items: center;
 }
@@ -67,21 +68,21 @@
 .nav-item:hover, .active-tab {
   color: var(--primary);
 }
-
+.dropdown-toggle {
+  position: relative;
+}
 /* --- DROPDOWN MENU FIX --- */
 .dropdown-menu {
   position: absolute;
-  top: 100%; /* Parent ke theek niche se start hoga */
-  left: 0;
+  top: calc(100% + 8px);
+  left: 50%;
   background: white;
   min-width: 200px;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
   padding: 10px 0;
-  margin-top: 10px; /* Thoda sa gap menu aur button ke beech */
   z-index: 2000;
-  border: 1px solid var(--border);
-  animation: slideIn 0.3s ease;
+ animation: slideIn 0.3s ease;display: block; /* Ensure visibility */
 }
 
 /* Dropdown ke andar ke items */

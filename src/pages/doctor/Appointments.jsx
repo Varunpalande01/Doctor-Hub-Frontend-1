@@ -211,22 +211,22 @@ const Appointments = () => {
                   </span>
                 </td>
                 <td className="actions-cell">
-                  <button className="btn-view" onClick={() => handleView(app)}>
-                    View
+                  <button className="" onClick={() => handleView(app)}>
+                    👁️‍🗨️
                   </button>
                   <button
                     className="btn-approve"
                     disabled={app.status === "APPROVED"}
                     onClick={() => handleStatusChange(app.id, "APPROVED")}
                   >
-                    Approve
+                    ✔️
                   </button>
                   <button
                     className="btn-reject"
                     disabled={app.status === "REJECTED"}
                     onClick={() => handleStatusChange(app.id, "REJECTED")}
                   >
-                    Reject
+                    ✖️
                   </button>
                 </td>
               </tr>

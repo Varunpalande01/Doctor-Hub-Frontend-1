@@ -45,29 +45,28 @@ const Labs = () => {
   ];
 
   const [labs, setLabs] = useState(initialLabs);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterCity, setFilterCity] = useState('All');
-  const [selectedLab, setSelectedLab] = useState(null);
-  
-  // States for Add Modal
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [newLab, setNewLab] = useState({
-    name: '', location: '', contact: '', email: '', type: 'Pathology'
-  });
+const [searchTerm, setSearchTerm] = useState('');
+const [filterCity, setFilterCity] = useState('All');
 
- const verifyLab = (id) => {
-  const confirmVerify = window.confirm(
-    'Are you sure you want to verify this lab?'
-  );
-  if (!confirmVerify) return;
+const [selectedLab, setSelectedLab] = useState(null);
 
-  setLabs(labs.map(lab =>
-    lab.id === id ? { ...lab, badge: 'System-Verified' } : lab
-  ));
+const [actionLab, setActionLab] = useState(null);
+const [actionType, setActionType] = useState("");
+const [actionReason, setActionReason] = useState("");
 
-  if (selectedLab?.id === id) {
-    setSelectedLab({ ...selectedLab, badge: 'System-Verified' });
-  }
+const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+const [newLab, setNewLab] = useState({
+  name: '',
+  location: '',
+  contact: '',
+  email: '',
+  type: 'Pathology'
+});
+
+const verifyLab = (lab) => {
+  setActionLab(lab);
+  setActionType("verify");
 };
 
   // Logic to Add Lab to Table
@@ -87,34 +86,60 @@ const Labs = () => {
     setNewLab({ name: '', location: '', contact: '', email: '', type: 'Pathology' }); 
   };
 
- const toggleStatus = (id) => {
-  const lab = labs.find(l => l.id === id);
-
-  if (lab.status === 'Active') {
-    const reason = window.prompt('Reason for suspension?');
-    if (!reason) return;
-  }
-
-  setLabs(labs.map(l =>
-    l.id === id
-      ? { ...l, status: l.status === 'Active' ? 'Suspended' : 'Active' }
-      : l
-  ));
-
-  if (selectedLab?.id === id) {
-    setSelectedLab({
-      ...selectedLab,
-      status: selectedLab.status === 'Active' ? 'Suspended' : 'Active'
-    });
-  }
+const toggleStatus = (lab) => {
+  setActionLab(lab);
+  setActionType(lab.status === "Active" ? "suspend" : "activate");
 };
+
 
   const filteredLabs = labs.filter(lab => {
     const matchesSearch = lab.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCity = filterCity === 'All' || lab.location === filterCity;
     return matchesSearch && matchesCity;
   });
+const handleConfirmAction = () => {
 
+  if (!actionLab) return;
+
+  if (actionType === "verify") {
+
+    setLabs(labs.map(l =>
+      l.id === actionLab.id
+        ? { ...l, badge: "System-Verified" }
+        : l
+    ));
+
+  }
+
+  if (actionType === "suspend") {
+
+    if (!actionReason.trim()) {
+  return;
+}
+
+    setLabs(labs.map(l =>
+      l.id === actionLab.id
+        ? { ...l, status: "Suspended" }
+        : l
+    ));
+
+  }
+
+  if (actionType === "activate") {
+
+    setLabs(labs.map(l =>
+      l.id === actionLab.id
+        ? { ...l, status: "Active" }
+        : l
+    ));
+
+  }
+
+  setActionLab(null);
+  setActionType("");
+  setActionReason("");
+
+};
   return (
     <div className="labs-container">
       <div className="labs-header">
@@ -234,11 +259,11 @@ const Labs = () => {
             </div>
             <div className="modal-footer">
               {selectedLab.badge !== 'System-Verified' && (
-                <button className="btn-verify" onClick={() => verifyLab(selectedLab.id)}>Verify Now</button>
+                <button className="btn-verify" onClick={() => verifyLab(selectedLab)}>Verify Now</button>
               )}
               <button 
                 className={selectedLab.status === 'Active' ? 'btn-suspend' : 'btn-reactivate'}
-                onClick={() => toggleStatus(selectedLab.id)}
+                onClick={() => toggleStatus(selectedLab)}
               >
                 {selectedLab.status === 'Active' ? 'Suspend' : 'Activate'}
               </button>
@@ -298,7 +323,79 @@ const Labs = () => {
           </div>
         </div>
       )}
+      {actionLab && (
+  <div className="modal-overlay">
+
+    <div className="modal-content">
+
+      <div className="modal-header">
+        <h2>
+          {actionType === "verify" && "Verify Laboratory"}
+          {actionType === "suspend" && "Suspend Laboratory"}
+          {actionType === "activate" && "Activate Laboratory"}
+        </h2>
+      </div>
+
+      <div className="modal-body">
+
+        <p>
+          {actionType === "verify" &&
+            "Are you sure you want to verify this lab?"
+          }
+
+          {actionType === "activate" &&
+            "Do you want to activate this lab again?"
+          }
+
+          {actionType === "suspend" &&
+            "Please enter reason for suspension"
+          }
+        </p>
+
+        {actionType === "suspend" && (
+          <textarea
+  placeholder="Enter suspension reason"
+  value={actionReason}
+  onChange={(e) => setActionReason(e.target.value)}
+  required
+            style={{
+              width: "100%",
+              padding: "10px",
+              marginTop: "10px"
+            }}
+          />
+        )}
+
+      </div>
+
+      <div className="modal-footer">
+
+        <button
+          className="btn-cancel"
+          onClick={() => {
+            setActionLab(null);
+            setActionType("");
+          }}
+        >
+          Cancel
+        </button>
+
+        <button
+  className="btn-submit-pro"
+  onClick={handleConfirmAction}
+  disabled={actionType === "suspend" && !actionReason.trim()}
+>
+  Confirm
+</button>
+
+      </div>
+
     </div>
+
+  </div>
+)}
+    </div>
+    
   );
 };
 
