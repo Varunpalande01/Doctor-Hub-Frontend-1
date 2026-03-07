@@ -7,7 +7,7 @@ import {
   Pill,
   ShieldCheck
 } from "lucide-react";
-import "./Notifications.css";
+import "./notifications.css";
 
 const dummyNotifications = [
   {
